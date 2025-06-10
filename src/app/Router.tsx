@@ -3,8 +3,8 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home.page";
 import AuthLayout from "../layout/AuthLayout";
 import Error from "../pages/Error.page";
-import Login from "../pages/Login.page";
-import Register from "../pages/Register.page";
+import Login from "../pages/auth/Login.page";
+import Register from "../pages/auth/Register.page";
 import Portfolio from "../pages/Portfolio.page";
 import Profile from "../pages/Profile.page";
 

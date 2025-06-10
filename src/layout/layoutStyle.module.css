@@ -1,0 +1,8 @@
+.authBg {
+  background: #4f46e5;
+  background: linear-gradient(
+    133deg,
+    rgba(79, 70, 229, 1) 0%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}

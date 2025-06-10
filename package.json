@@ -10,8 +10,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mantine/core": "8.0.2",
-    "@mantine/hooks": "8.0.2",
+    "@mantine/core": "^8.0.2",
+    "@mantine/form": "^8.1.0",
+    "@mantine/hooks": "^8.0.2",
+    "@tabler/icons-react": "^3.34.0",
     "motion": "^12.16.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

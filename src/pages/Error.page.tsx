@@ -9,13 +9,13 @@ export default function Error() {
           style={{ fontSize: "80px" }}
           fw={900}
           variant="gradient"
-          gradient={{ from: "cyan", to: "red", deg: 77 }}
+          gradient={{ from: "cyan", to: "#4f46e5", deg: 77 }}
         >
           ERROR 404
         </Text>
         <Center>
           <Link to="/">
-            <Button variant="outline" color="white">
+            <Button variant="outline" color="#4f46e5">
               Вернуться на главную
             </Button>
           </Link>

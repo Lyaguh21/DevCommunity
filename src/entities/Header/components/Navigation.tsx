@@ -60,7 +60,7 @@ export default function Navigation() {
         >
           <Text
             fw={500}
-            c={location.pathname === link.to ? "#2563eb" : "#374151"}
+            c={location.pathname === link.to ? "#4f46e5" : "#374151"}
           >
             {link.label}
           </Text>
@@ -73,7 +73,7 @@ export default function Navigation() {
           bottom: 0,
           left: underlineX,
           height: 2,
-          backgroundColor: "#2563eb",
+          backgroundColor: "#4f46e5",
           width: underlineWidth,
           zIndex: 1,
         }}
