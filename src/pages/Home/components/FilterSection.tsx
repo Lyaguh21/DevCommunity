@@ -2,7 +2,13 @@ import { Box, Button, Flex, Select, Text } from "@mantine/core";
 import classes from "../classes/Home.module.css";
 import { Plus } from "tabler-icons-react";
 
-export default function FilterSection() {
+export default function FilterSection({
+  filters,
+  setFilters,
+}: {
+  filters: { type: string; direction: string };
+  setFilters: (updatedFilters: { type: string; direction: string }) => void;
+}) {
   const TypePost = [
     { value: "All", label: "Все типы" },
     { value: "Content", label: "Контент" },
@@ -19,6 +25,19 @@ export default function FilterSection() {
     { value: "Manager", label: "Manager" },
     { value: "HR", label: "HR" },
   ];
+
+  const handleTypeChange = (value: string | null) => {
+    if (value !== null) {
+      setFilters({ ...filters, type: value });
+    }
+  };
+
+  const handleDirectionChange = (value: string | null) => {
+    if (value !== null) {
+      setFilters({ ...filters, direction: value });
+    }
+  };
+
   return (
     <Flex
       w="100%"
@@ -34,21 +53,31 @@ export default function FilterSection() {
           <Text fw={500} fz={14} c={"#374151"} visibleFrom="md">
             Тип поста:
           </Text>
-          <Select allowDeselect={false} data={TypePost} defaultValue={"All"} />
+          <Select
+            allowDeselect={false}
+            data={TypePost}
+            value={filters.type}
+            onChange={handleTypeChange}
+          />
         </Flex>
 
         <Flex align="center" gap={8}>
           <Text fw={500} fz={14} c={"#374151"} visibleFrom="md">
             Направление:
           </Text>
-          <Select allowDeselect={false} data={Roles} defaultValue={"All"} />
+          <Select
+            allowDeselect={false}
+            data={Roles}
+            value={filters.direction}
+            onChange={handleDirectionChange}
+          />
         </Flex>
       </Flex>
 
       <Button bg="#4f46e5" visibleFrom="sm">
         <Flex align="center" gap={4}>
           <Plus size={16} />
-          <Text>Создать </Text>
+          <Text>Создать</Text>
         </Flex>
       </Button>
 

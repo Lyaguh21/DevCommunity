@@ -1,6 +1,5 @@
 import { Avatar, Flex, Text } from "@mantine/core";
 
-
 import classes from "./classes/Header.module.css";
 import Navigation from "./components/Navigation";
 import { useState } from "react";
@@ -17,6 +16,7 @@ export default function Header() {
         bg="white"
         px={{ base: "20px", sm: "80px" }}
         py={6}
+        pos="fixed"
         className={classes.header}
         justify="space-between"
         align="center"

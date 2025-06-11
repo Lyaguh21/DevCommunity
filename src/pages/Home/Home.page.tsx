@@ -1,8 +1,15 @@
 import { Center, Flex, Text } from "@mantine/core";
 import FilterSection from "./components/FilterSection";
 import PostTemplate from "./components/PostTemplate";
+import { useState } from "react";
+import { Post } from "../../interfaces/Post.interface";
 
 export default function Home() {
+  const [filters, setFilters] = useState({
+    type: "All",
+    direction: "All",
+  });
+
   const posts = [
     {
       id: 1,
@@ -42,19 +49,20 @@ export default function Home() {
         "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
     },
   ];
+  const [filteredData, setFilteredData] = useState<Post[]>(posts);
 
   return (
     <Flex direction="column" py={32}>
-      <FilterSection />
-      {posts.length === 0 && (
+      <FilterSection filters={filters} setFilters={setFilters} />
+      {filteredData.length === 0 && (
         <Center>
           <Text>Постов еще нет, создайте первый!</Text>
         </Center>
       )}
-      {posts.length > 0 && (
+      {filteredData.length > 0 && (
         <Flex direction="column" gap={16}>
-          {posts.map((post) => (
-            <PostTemplate post={post} />
+          {filteredData.map((post) => (
+            <PostTemplate key={post.id} post={post} />
           ))}
         </Flex>
       )}
