@@ -1,5 +1,5 @@
 import { Avatar, Flex, Text } from "@mantine/core";
-import { UserCircle } from "tabler-icons-react";
+
 
 import classes from "./classes/Header.module.css";
 import Navigation from "./components/Navigation";

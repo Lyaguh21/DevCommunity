@@ -23,9 +23,8 @@ export default function FilterSection() {
     <Flex
       w="100%"
       bg="white"
-      my={32}
+      mb={32}
       p={24}
-      style={{ borderRadius: "12px" }}
       justify="space-between"
       align="center"
       className={classes.shadow}
