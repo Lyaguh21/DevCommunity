@@ -42,7 +42,7 @@ export default function PostTemplate({ post }: { post: Post }) {
 
   return (
     <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
-      <Flex justify="space-between">
+      <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
         <Flex gap={6}>
           <Avatar
             src={post.author.avatar}
@@ -75,7 +75,12 @@ export default function PostTemplate({ post }: { post: Post }) {
       </Text>
 
       {post.previewImage && (
-        <Image src={post.previewImage} h={400} w="auto" mb={16} />
+        <Image
+          src={post.previewImage}
+          h={{ base: 190, sm: 300 }}
+          w="auto"
+          mb={16}
+        />
       )}
 
       <Text c="#374151" lineClamp={3} component="div">
