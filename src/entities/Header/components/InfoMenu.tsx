@@ -15,15 +15,16 @@ export default function InfoMenu({ setVisibleInfo }) {
         position: "fixed",
         top: "0",
         right: "0",
-        height: "100px",
+        height: "110px",
         width: "400px",
         backgroundColor: "white",
         zIndex: 1000,
+        padding: "0 0 0 0",
       }}
       className={classes.infoMenu}
     >
-      <Flex h="100%" direction="column" justify="space-between">
-        <Flex align="center" justify="space-between" py={5}>
+      <Flex h="100%" direction="column" justify="space-between" py={10}>
+        <Flex align="center" justify="space-between" py={5} px={10}>
           <Flex align="center" gap={10}>
             <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
               A
@@ -34,7 +35,13 @@ export default function InfoMenu({ setVisibleInfo }) {
         </Flex>
 
         <NavLink to="/auth/login">
-          <Flex align="center" justify="center" gap={8}>
+          <Flex
+            align="center"
+            justify="center"
+            gap={8}
+            py={12.5}
+            style={{ borderTop: "solid 1.5px rgb(196, 198, 201)" }}
+          >
             <Logout height={25} width={25} color="#4f46e5" />
             <Text fw={500} c="#4f46e5">
               Войти

@@ -14,6 +14,7 @@ import { Heart, Point } from "tabler-icons-react";
 import TypeAndDirection from "./TypeAndDirection";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 
 export default function PostTemplate({ post }: { post: Post }) {
   const [likes, setLikes] = useState(post.likes);
@@ -67,7 +68,11 @@ export default function PostTemplate({ post }: { post: Post }) {
           </Box>
         </Flex>
 
-        <TypeAndDirection type={post.type} direction={post.direction} />
+        <Flex gap={8} align="center">
+          <TypeAndDirection type={post.type} direction={post.direction} />
+          <IconEdit size={20} style={{ cursor: "pointer" }} />
+          <IconTrash size={20} style={{ cursor: "pointer" }} />
+        </Flex>
       </Flex>
 
       <Text fz={20} fw={700} my={16}>
@@ -78,7 +83,7 @@ export default function PostTemplate({ post }: { post: Post }) {
         <Image
           src={post.previewImage}
           h={{ base: 190, sm: 300 }}
-          w="auto"
+          w={{ base: "100%", sm: "auto" }}
           mb={16}
         />
       )}
@@ -96,11 +101,12 @@ export default function PostTemplate({ post }: { post: Post }) {
 
         <Flex gap={8} align="center">
           <Heart
+            style={{ cursor: "pointer" }}
             color={!isLiked ? "#374151" : "#ed093f"}
             fill={!isLiked ? "none" : "#ed093f"}
             onClick={handleLike}
           />
-          <Text c="#374151" fz={16}>
+          <Text c="#374151" fz={16} fw={600}>
             {likes}
           </Text>
         </Flex>
