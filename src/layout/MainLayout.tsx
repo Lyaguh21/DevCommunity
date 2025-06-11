@@ -6,7 +6,9 @@ export default function MainLayout() {
   return (
     <Box h="100vh" bg="#f9fafb">
       <Header />
-      <Outlet />
+      <Box px={{ base: "20px", sm: "80px" }}>
+        <Outlet />
+      </Box>
     </Box>
   );
 }

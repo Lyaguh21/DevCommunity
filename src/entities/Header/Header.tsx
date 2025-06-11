@@ -1,10 +1,10 @@
-import { Flex, Text } from "@mantine/core";
+import { Avatar, Flex, Text } from "@mantine/core";
 import { UserCircle } from "tabler-icons-react";
 
 import classes from "./classes/Header.module.css";
 import Navigation from "./components/Navigation";
 import { useState } from "react";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import InfoMenu from "./components/InfoMenu";
 export default function Header() {
@@ -32,7 +32,9 @@ export default function Header() {
           align="center"
           onClick={() => setVisibleInfo(true)}
         >
-          <UserCircle height={34} width={34} color="#4f46e5" />
+          <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
+            A
+          </Avatar>
         </Flex>
       </Flex>
 

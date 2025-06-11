@@ -1,4 +1,4 @@
-import { Flex, Text } from "@mantine/core";
+import { Avatar, Flex, Text } from "@mantine/core";
 import { motion } from "motion/react";
 import { NavLink } from "react-router";
 import { Logout, UserCircle, X } from "tabler-icons-react";
@@ -10,7 +10,7 @@ export default function InfoMenu({ setVisibleInfo }) {
       initial={{ x: 300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 300, opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.2 }}
       style={{
         position: "fixed",
         top: "0",
@@ -25,7 +25,9 @@ export default function InfoMenu({ setVisibleInfo }) {
       <Flex h="100%" direction="column" justify="space-between">
         <Flex align="center" justify="space-between" py={5}>
           <Flex align="center" gap={10}>
-            <UserCircle height={34} width={34} />
+            <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
+              A
+            </Avatar>
             <Text fw={500}>Анонимный пользователь</Text>
           </Flex>
           <X onClick={() => setVisibleInfo(false)} />
