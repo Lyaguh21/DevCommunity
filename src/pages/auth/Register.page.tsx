@@ -10,7 +10,12 @@ import {
   Text,
 } from "@mantine/core";
 import { NavLink } from "react-router";
-import { UserCircle } from "tabler-icons-react";
+import {
+  ClipboardText,
+  FileArrowRight,
+  FileCheck,
+  UserCircle,
+} from "tabler-icons-react";
 import classes from "./classes/AuthStyles.module.css";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
@@ -99,7 +104,13 @@ export default function Register() {
     console.log(form.values);
   };
   return (
-    <Box bg="white" p={32} style={{ borderRadius: "12px" }} mih={575}>
+    <Box
+      bg="white"
+      p={32}
+      style={{ borderRadius: "12px" }}
+      mih={575}
+      className={classes.shadow}
+    >
       <Center>
         <UserCircle height={48} width={48} color="#4f46e5" />
       </Center>
@@ -108,9 +119,9 @@ export default function Register() {
           Создать аккаунт
         </Text>
       </Center>
-      <Flex direction="column">
+      <Flex direction="column" justify="space-between" mih={426}>
         <Stepper active={active} mb={16} color="#4f46e5">
-          <Stepper.Step>
+          <Stepper.Step icon={<FileArrowRight color="#4f46e5" />}>
             <form>
               <Flex direction="column" gap={16} mt={8}>
                 <Input.Wrapper
@@ -157,7 +168,7 @@ export default function Register() {
             </form>
           </Stepper.Step>
 
-          <Stepper.Step>
+          <Stepper.Step icon={<FileCheck color="#4f46e5" />}>
             <form>
               <Flex gap={16} direction="column">
                 <Flex gap={16} w={385} mt={8}>
@@ -210,7 +221,7 @@ export default function Register() {
           </Stepper.Step>
 
           <Stepper.Completed>
-            <Text size="lg" w={500} mb="md" ta="center">
+            <Text size="30px" mt={40} fw={700} w={385} mb="md" ta="center">
               Регистрация завершена!
             </Text>
           </Stepper.Completed>
@@ -250,17 +261,10 @@ export default function Register() {
           </Flex>
         )}
         {active === 2 && (
-          <Center>
+          <Center mb={100}>
             <NavLink to="/">
-              <Button
-                loading={loading}
-                h={100}
-                w={100}
-                bg="#4f46e5"
-                radius="6px"
-                style={{ borderRadius: "100" }}
-              >
-                <IconArrowRight />
+              <Button bg="#4f46e5" radius="100px" h={80} w={80} p={5}>
+                <IconArrowRight size={50} />
               </Button>
             </NavLink>
           </Center>

@@ -13,7 +13,12 @@ import classes from "./classes/AuthStyles.module.css";
 
 export default function Login() {
   return (
-    <Box bg="white" p={32} style={{ borderRadius: "12px" }}>
+    <Box
+      bg="white"
+      p={32}
+      style={{ borderRadius: "12px" }}
+      className={classes.shadow}
+    >
       <Center>
         <UserCircle height={48} width={48} color="#4f46e5" />
       </Center>
