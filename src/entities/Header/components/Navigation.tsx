@@ -1,6 +1,12 @@
 import { NavLink, useLocation } from "react-router";
 import { Text, Box, Flex } from "@mantine/core";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  AnimatePresence,
+} from "framer-motion";
 import { useEffect, useRef } from "react";
 
 export default function Navigation() {
@@ -67,17 +73,24 @@ export default function Navigation() {
         </NavLink>
       ))}
 
-      <motion.div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: underlineX,
-          height: 2,
-          backgroundColor: "#4f46e5",
-          width: underlineWidth,
-          zIndex: 1,
-        }}
-      />
+      <AnimatePresence>
+        {["/", "/profile", "/portfolio"].indexOf(location.pathname) != -1 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: underlineX,
+              height: 2,
+              backgroundColor: "#4f46e5",
+              width: underlineWidth,
+              zIndex: 1,
+            }}
+          />
+        )}
+      </AnimatePresence>
     </Flex>
   );
 }

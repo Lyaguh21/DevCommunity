@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Select, Text } from "@mantine/core";
 import classes from "../classes/Home.module.css";
 import { Plus } from "tabler-icons-react";
+import { NavLink } from "react-router";
 
 export default function FilterSection({
   filters,
@@ -73,18 +74,21 @@ export default function FilterSection({
           />
         </Flex>
       </Flex>
-
-      <Button bg="#4f46e5" visibleFrom="sm">
-        <Flex align="center" gap={4}>
-          <Plus size={16} />
-          <Text>Создать</Text>
-        </Flex>
-      </Button>
+      <NavLink to="/createPost">
+        <Button bg="#4f46e5" visibleFrom="sm">
+          <Flex align="center" gap={4}>
+            <Plus size={16} />
+            <Text>Создать</Text>
+          </Flex>
+        </Button>
+      </NavLink>
 
       <Box size={36} w={36} style={{ alignSelf: "flex-start" }} hiddenFrom="sm">
-        <Button bg="#4f46e5" px={6}>
-          <Plus />
-        </Button>
+        <NavLink to="/createPost">
+          <Button bg="#4f46e5" px={6}>
+            <Plus />
+          </Button>
+        </NavLink>
       </Box>
     </Flex>
   );

@@ -20,18 +20,11 @@ import classes from "./classes/AuthStyles.module.css";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { IconArrowRight } from "@tabler/icons-react";
+import { Roles } from "../../interfaces/Role";
 
 export default function Register() {
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(false);
-  const Roles = [
-    { value: "Frontend", label: "Frontend Developer" },
-    { value: "Backend", label: "Backend Developer" },
-    { value: "QA", label: "QA Engineer" },
-    { value: "Designer", label: "Designer" },
-    { value: "Manager", label: "Manager" },
-    { value: "HR", label: "HR" },
-  ];
 
   const form = useForm({
     initialValues: {

@@ -1,3 +1,14 @@
 a {
   text-decoration: none;
 }
+
+*::-webkit-scrollbar {
+  width: 0px; /* ширина scrollbar */
+}
+*::-webkit-scrollbar-track {
+  background: #abaeb4; /* цвет дорожки */
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #4f46e5; /* цвет плашки */
+  border-radius: 12px; /* закругления плашки */
+}
