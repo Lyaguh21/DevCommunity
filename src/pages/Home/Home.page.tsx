@@ -14,7 +14,8 @@ export default function Home() {
     {
       id: 1,
       title: "Test",
-      content: "# Test",
+      content:
+        "ewdw\ndedeef\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref",
       author: {
         name: "Тема",
         surname: "Иванов",

@@ -10,3 +10,9 @@
   font-size: 18px;
   /* color: #374151; */
 }
+
+.input {
+  /* background-color: #101010; */
+  border: 0;
+  outline: none;
+}
