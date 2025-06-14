@@ -3,7 +3,7 @@ a {
 }
 
 *::-webkit-scrollbar {
-  width: 0px; /* ширина scrollbar */
+  width: 4px; /* ширина scrollbar */
 }
 *::-webkit-scrollbar-track {
   background: #abaeb4; /* цвет дорожки */
@@ -11,4 +11,8 @@ a {
 *::-webkit-scrollbar-thumb {
   background-color: #4f46e5; /* цвет плашки */
   border-radius: 12px; /* закругления плашки */
+}
+
+body {
+  overflow-y: scroll;
 }

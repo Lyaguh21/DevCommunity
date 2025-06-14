@@ -52,6 +52,9 @@ export default function CreatePost() {
   return (
     <Box py={32}>
       <Box bg="white" p={24} className={classes.shadow}>
+        <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
+          Создание поста
+        </Text>
         <form>
           <Flex gap={16} mb={16}>
             <Flex gap={16} direction="column">
@@ -180,7 +183,7 @@ export default function CreatePost() {
             </Flex>
           </Flex>
           <Textarea
-            rows={9}
+            rows={8}
             label="Текст"
             size="lg"
             placeholder="Напишите текст к своему посту в формате Markdown
@@ -194,7 +197,7 @@ export default function CreatePost() {
             {...form.getInputProps("content")}
           />
 
-          <Flex justify="flex-end" mt={32} gap={16}>
+          <Flex justify="flex-end" mt={24} gap={16}>
             <NavLink to="/">
               <Button
                 h={50}
