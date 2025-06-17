@@ -108,7 +108,7 @@ export default function CreatePost() {
                   setDesktopFile(files[0]),
                     setDesktopPreview(URL.createObjectURL(files[0]));
                 }}
-                h="240px"
+                h="100%"
                 w="100%"
                 styles={{
                   root: desktopPreview

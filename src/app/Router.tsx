@@ -8,6 +8,7 @@ import Register from "../pages/auth/Register.page";
 import Portfolio from "../pages/profile/Portfolio.page";
 import Profile from "../pages/profile/Profile.page";
 import CreatePost from "../pages/Home/CreatePost.page";
+import ViewPost from "../pages/Home/ViewPost.page";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/createPost",
         element: <CreatePost />,
+      },
+      {
+        path: "/post/:id",
+        element: <ViewPost />,
       },
       {
         path: "/profile",

@@ -8,18 +8,19 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { Post } from "../../../interfaces/Post.interface";
-import classes from "../classes/Home.module.css";
 import { Roles } from "../../../interfaces/Role";
 import { Heart, Point } from "tabler-icons-react";
 import TypeAndDirection from "./TypeAndDirection";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { useNavigate } from "react-router";
+import classes from "../classes/Home.module.css";
 
 export default function PostTemplate({ post }: { post: Post }) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLikedByUser);
-
+  const navigate = useNavigate();
   const handleLike = async () => {
     try {
       const newLikeStatus = !isLiked;
@@ -94,7 +95,13 @@ export default function PostTemplate({ post }: { post: Post }) {
 
       <Flex align="center" justify="space-between" mt={8}>
         <Flex>
-          <UnstyledButton variant="subtle" c="#4f46e5" p={0} fw={500}>
+          <UnstyledButton
+            variant="subtle"
+            c="#4f46e5"
+            p={0}
+            fw={500}
+            onClick={() => navigate(`/post/${post.id}`)}
+          >
             Развернуть
           </UnstyledButton>
         </Flex>
