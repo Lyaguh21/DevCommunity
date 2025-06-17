@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
 import { Avatar, Box, Flex, Image, Text } from "@mantine/core";
-import { Heart, Point } from "tabler-icons-react";
+import { ArrowLeft, Heart, Point } from "tabler-icons-react";
 import classes from "./classes/Home.module.css";
 import { Roles } from "../../interfaces/Role";
 import TypeAndDirection from "./components/TypeAndDirection";
@@ -23,6 +23,8 @@ export default function ViewPost() {
       email: "test@gmail.com",
       password: "11111111",
       role: "Frontend",
+      avatar:
+        "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
     },
     type: "Content",
     direction: "Frontend",
@@ -126,23 +128,33 @@ export default function ViewPost() {
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </Text>
 
-        <Flex align="center" gap={16} mt={8}>
-          <Flex gap={8} align="center">
-            <Heart
+        <Flex justify="space-between" align="center">
+          <Flex align="center" gap={16} mt={8}>
+            <Flex gap={8} align="center">
+              <Heart
+                style={{ cursor: "pointer" }}
+                color={!isLiked ? "#374151" : "#ed093f"}
+                fill={!isLiked ? "none" : "#ed093f"}
+                onClick={handleLike}
+              />
+              <Text c="#374151" fz={16} fw={600}>
+                {likes}
+              </Text>
+            </Flex>
+            <IconShare3
+              color="#374151"
               style={{ cursor: "pointer" }}
-              color={!isLiked ? "#374151" : "#ed093f"}
-              fill={!isLiked ? "none" : "#ed093f"}
-              onClick={handleLike}
+              onClick={handleCopy}
             />
-            <Text c="#374151" fz={16} fw={600}>
-              {likes}
-            </Text>
           </Flex>
-          <IconShare3
-            color="#374151"
-            style={{ cursor: "pointer" }}
-            onClick={handleCopy}
-          />
+          <NavLink to="/" color="black" style={{ textDecoration: "none" }}>
+            <Flex align="center">
+              <ArrowLeft color="black" />
+              <Text fw={600} c="black">
+                Назад к ленте
+              </Text>
+            </Flex>
+          </NavLink>
         </Flex>
       </Box>
     </Box>

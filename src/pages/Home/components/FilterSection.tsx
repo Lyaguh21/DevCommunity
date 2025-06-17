@@ -19,9 +19,9 @@ export default function FilterSection({
 
   const Roles = [
     { value: "All", label: "Все направления" },
-    { value: "Frontend", label: "Frontend Developer" },
-    { value: "Backend", label: "Backend Developer" },
-    { value: "QA", label: "QA Engineer" },
+    { value: "Frontend", label: "Frontend" },
+    { value: "Backend", label: "Backend" },
+    { value: "QA", label: "QA" },
     { value: "Designer", label: "Designer" },
     { value: "Manager", label: "Manager" },
     { value: "HR", label: "HR" },

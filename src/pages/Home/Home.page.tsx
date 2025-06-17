@@ -49,6 +49,24 @@ export default function Home() {
       previewImage:
         "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
     },
+    {
+      id: 3,
+      title: "Test",
+      content:
+        "ewdw\ndedeef\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref",
+      author: {
+        name: "Темe2eа",
+        surname: "e2",
+        nickname: "212",
+        email: "test@gmail.com",
+        password: "11111111",
+        role: "QA",
+      },
+      type: "Event",
+      direction: "QA",
+      likes: 0,
+      isLikedByUser: false,
+    },
   ];
   const [filteredData, setFilteredData] = useState<Post[]>(posts);
 

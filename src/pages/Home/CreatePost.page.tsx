@@ -12,13 +12,13 @@ import {
 import { NavLink } from "react-router";
 
 import classes from "./classes/Home.module.css";
-import { Roles } from "../../interfaces/Role";
 import { TypePost } from "../../interfaces/Type";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import "@mantine/dropzone/styles.css";
 import { useForm } from "@mantine/form";
+import { Directions } from "../../interfaces/Directions";
 
 export default function CreatePost() {
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
@@ -56,14 +56,14 @@ export default function CreatePost() {
           Создание поста
         </Text>
         <form>
-          <Flex gap={16} mb={16}>
-            <Flex gap={16} direction="column">
+          <Flex gap={16} mb={16} wrap={{ base: "wrap", md: "nowrap" }}>
+            <Flex gap={16} direction="column" w={{ md: "385px", base: "100%" }}>
               <Input.Wrapper
                 label="Название"
                 classNames={{ label: classes.label }}
               >
                 <Input
-                  w={385}
+                  w={{ md: "385px", base: "100%" }}
                   placeholder="Введите название поста"
                   size="lg"
                   c="#4f46e5"
@@ -77,7 +77,8 @@ export default function CreatePost() {
                 classNames={{ label: classes.label }}
               >
                 <Select
-                  data={Roles}
+                  data={Directions}
+                  w={{ md: "385px", base: "100%" }}
                   placeholder="Введите направление поста"
                   size="lg"
                   {...form.getInputProps("direction")}
@@ -88,6 +89,7 @@ export default function CreatePost() {
                 classNames={{ label: classes.label }}
               >
                 <Select
+                  w={{ md: "385px", base: "100%" }}
                   data={TypePost}
                   placeholder="Введите тип поста"
                   size="lg"
@@ -108,7 +110,7 @@ export default function CreatePost() {
                   setDesktopFile(files[0]),
                     setDesktopPreview(URL.createObjectURL(files[0]));
                 }}
-                h="100%"
+                h={{ md: "100%", base: "240px" }}
                 w="100%"
                 styles={{
                   root: desktopPreview
@@ -192,8 +194,10 @@ export default function CreatePost() {
 # Заголовок
 ## Подзаголовок
 **Жирный текст**
+[Ссылка](https://example.com)
 *Курсив*
-`код`"
+`код`
+> Цитата"
             {...form.getInputProps("content")}
           />
 

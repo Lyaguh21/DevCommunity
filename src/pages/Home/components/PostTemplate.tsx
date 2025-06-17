@@ -102,7 +102,7 @@ export default function PostTemplate({ post }: { post: Post }) {
             fw={500}
             onClick={() => navigate(`/post/${post.id}`)}
           >
-            Развернуть
+            Посмотреть
           </UnstyledButton>
         </Flex>
 
