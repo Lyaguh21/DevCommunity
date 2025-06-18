@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { IconArrowRight } from "@tabler/icons-react";
 import { Roles } from "../../interfaces/Role";
+import axios from "axios";
 
 export default function Register() {
   const [active, setActive] = useState(0);
@@ -33,8 +34,8 @@ export default function Register() {
       confirmPassword: "",
 
       email: "",
-      name: "",
-      surname: "",
+      firstname: "",
+      lastname: "",
       role: "",
     },
 
@@ -59,9 +60,10 @@ export default function Register() {
       if (active === 1) {
         return {
           email: /^\S+@\S+$/.test(values.email) ? null : "Некорректный email",
-          name: values.name.trim().length < 2 ? "Имя слишком короткое" : null,
+          name:
+            values.firstname.trim().length < 2 ? "Имя слишком короткое" : null,
           surname:
-            values.surname.trim().length < 2
+            values.lastname.trim().length < 2
               ? "Фамилия слишком короткая"
               : null,
           role: values.role !== "" ? null : "Роль не выбрана",
@@ -94,7 +96,18 @@ export default function Register() {
     // } finally {
     //   setLoading(false);
     // }
-    console.log(form.values);
+
+    axios
+      .post("http://localhost:3000/signup", {
+        nickname: form.values.nickname,
+        password: form.values.password,
+        firstname: form.values.firstname,
+        lastname: form.values.lastname,
+        email: form.values.email,
+        role: form.values.role,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
   return (
     <Box
@@ -172,7 +185,7 @@ export default function Register() {
                     <Input
                       placeholder="Ваше имя"
                       size="lg"
-                      {...form.getInputProps("name")}
+                      {...form.getInputProps("firstname")}
                     />
                   </Input.Wrapper>
                   <Input.Wrapper
@@ -182,7 +195,7 @@ export default function Register() {
                     <Input
                       placeholder="Ваша фамилия"
                       size="lg"
-                      {...form.getInputProps("surname")}
+                      {...form.getInputProps("lastname")}
                     />
                   </Input.Wrapper>
                 </Flex>
