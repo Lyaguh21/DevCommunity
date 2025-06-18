@@ -3,9 +3,10 @@ import { Avatar, Flex, Text } from "@mantine/core";
 import classes from "./classes/Header.module.css";
 import Navigation from "./components/Navigation";
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 
 import InfoMenu from "./components/InfoMenu";
+
 export default function Header() {
   const [visibleInfo, setVisibleInfo] = useState(false);
 
@@ -21,9 +22,11 @@ export default function Header() {
         justify="space-between"
         align="center"
       >
-        <Text c="#4f46e5" fw="bold" fz="h3" visibleFrom="sm">
-          DevCommunity
-        </Text>
+        <a href="#top">
+          <Text c="#4f46e5" fw="bold" fz="h3" visibleFrom="sm">
+            DevCommunity
+          </Text>
+        </a>
 
         <Navigation />
 

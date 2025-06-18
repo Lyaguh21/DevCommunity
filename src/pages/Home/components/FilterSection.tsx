@@ -43,11 +43,12 @@ export default function FilterSection({
     <Flex
       w="100%"
       bg="white"
-      mb={32}
+      mb={16}
       p={24}
       justify="space-between"
       align="center"
       className={classes.shadow}
+      id="#top"
     >
       <Flex gap={16} wrap={{ base: "wrap", md: "nowrap" }}>
         <Flex align="center" gap={8}>

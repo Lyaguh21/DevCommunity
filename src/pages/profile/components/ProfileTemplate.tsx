@@ -1,9 +1,29 @@
-import { Avatar, Box, Button, Flex, Text } from "@mantine/core";
+import { Avatar, Box, Button, Flex, Text, UnstyledButton } from "@mantine/core";
 import { UserProfile } from "../../../interfaces/UserProfile";
 import classes from "../classes/profile.module.css";
 import { Roles } from "../../../interfaces/Role";
 import { Edit, Logout } from "tabler-icons-react";
-export default function ProfileTemplate({ user }: { user: UserProfile }) {
+import { useEffect, useRef, useState } from "react";
+export default function ProfileTemplate({
+  user,
+  openModal,
+}: {
+  user: UserProfile;
+  openModal: any;
+}) {
+  const [open, setOpen] = useState(false);
+  const textRef = useRef<HTMLDivElement>(null);
+  const [maxHeight, setMaxHeight] = useState("35px");
+
+  useEffect(() => {
+    if (textRef.current) {
+      if (open) {
+        setMaxHeight(`${textRef.current.scrollHeight}px`);
+      } else {
+        setMaxHeight("35px");
+      }
+    }
+  }, [open, user.description]);
   return (
     <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
       <Flex align="center" justify="space-between">
@@ -19,7 +39,7 @@ export default function ProfileTemplate({ user }: { user: UserProfile }) {
               {user.nickname[0]}
             </Text>
           </Avatar>
-          <Flex direction="column" gap={8}>
+          <Flex direction="column" gap={4}>
             <Text lh="20px" fz={24} fw={700}>
               {user.firstName} {user.lastName}
             </Text>
@@ -27,10 +47,16 @@ export default function ProfileTemplate({ user }: { user: UserProfile }) {
               @{user.nickname}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
-              {Roles.find((role) => user.role == role.value)?.label}
+              Роль:{" "}
+              <Text span c="black">
+                {Roles.find((role) => user.role == role.value)?.label}
+              </Text>
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
-              {user.workplace}
+              Компания:{" "}
+              <Text span c="black">
+                {user.workplace}
+              </Text>
             </Text>
           </Flex>
         </Flex>
@@ -48,7 +74,7 @@ export default function ProfileTemplate({ user }: { user: UserProfile }) {
             </Flex>
           </Button>
 
-          <Button bg="#eb0918" visibleFrom="sm">
+          <Button bg="#eb0918" visibleFrom="sm" onClick={openModal}>
             <Flex align="center" gap={4}>
               <Logout size={16} />
               <Text>Выйти</Text>
@@ -63,13 +89,37 @@ export default function ProfileTemplate({ user }: { user: UserProfile }) {
       </Flex>
 
       {user.description && (
-        <Text
-          pt={12}
-          mt={12}
-          style={{ borderTop: "solid 1.5px rgb(196, 198, 201)" }}
-        >
-          {user.description}
-        </Text>
+        <>
+          <Box
+            ref={textRef}
+            style={{
+              borderTop: "solid 1.5px rgb(196, 198, 201)",
+              overflow: "hidden",
+              maxHeight: maxHeight,
+              transition: "max-height 0.3s ease",
+              paddingTop: "12px",
+              marginTop: "12px",
+            }}
+          >
+            <Text c="#6B7280" span>
+              О себе:{" "}
+            </Text>
+            <Text component="span">{user.description}</Text>
+          </Box>
+          {user.description.length > 152 && (
+            <Flex w="100%" justify="flex-end">
+              <UnstyledButton
+                variant="subtle"
+                c="#4f46e5"
+                p={0}
+                fw={500}
+                onClick={() => setOpen(!open)}
+              >
+                {open ? "Свернуть" : "Раскрыть"}
+              </UnstyledButton>
+            </Flex>
+          )}
+        </>
       )}
     </Box>
   );

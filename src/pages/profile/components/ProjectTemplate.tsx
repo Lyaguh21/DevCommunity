@@ -26,27 +26,33 @@ export default function ProfileTemplate({ project }: { project: Project }) {
           {project.description}
         </Text>
 
-        <Flex gap={8}>
-          <NavLink to={project.links[0]}>
-            <Flex gap={2} align="center">
-              <BrandGithub color="#4f46e5" size={16} />
-              <Text c="#4f46e5">GitHub</Text>
-            </Flex>
-          </NavLink>
+        <Flex gap={8} h={24}>
+          {project.links[0] && (
+            <NavLink to={project.links[0]}>
+              <Flex gap={2} align="center">
+                <BrandGithub color="#4f46e5" size={16} />
+                <Text c="#4f46e5">GitHub</Text>
+              </Flex>
+            </NavLink>
+          )}
 
-          <NavLink to={project.links[1]}>
-            <Flex gap={0} align="center">
-              <Link color="#30b06b" size={16} />
-              <Text c="#30b06b">Demo</Text>
-            </Flex>
-          </NavLink>
+          {project.links[1] && (
+            <NavLink to={project.links[1]}>
+              <Flex gap={0} align="center">
+                <Link color="#30b06b" size={16} />
+                <Text c="#30b06b">Demo</Text>
+              </Flex>
+            </NavLink>
+          )}
 
-          <NavLink to={project.links[1]}>
-            <Flex gap={0} align="center">
-              <BrandFigma color="#f20cb1" size={16} />
-              <Text c="#f20cb1">Design</Text>
-            </Flex>
-          </NavLink>
+          {project.links[2] && (
+            <NavLink to={project.links[2]}>
+              <Flex gap={0} align="center">
+                <BrandFigma color="#f20cb1" size={16} />
+                <Text c="#f20cb1">Design</Text>
+              </Flex>
+            </NavLink>
+          )}
         </Flex>
         <NavLink to="/">
           <UnstyledButton variant="subtle" c="#4f46e5" p={0} fw={500}>

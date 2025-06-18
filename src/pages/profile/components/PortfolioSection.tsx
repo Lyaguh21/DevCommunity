@@ -9,7 +9,14 @@ export default function PortfolioSection({
   projects: Project[];
 }) {
   return (
-    <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
+    <Box
+      w={"100%"}
+      bg="white"
+      className={classes.shadow}
+      p={24}
+      pb={12}
+      mb={24}
+    >
       <Flex align="center" justify="space-between" mb={4}>
         <Text fz={24} fw={700}>
           Портфолио
