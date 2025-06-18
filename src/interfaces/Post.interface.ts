@@ -3,8 +3,8 @@ export type Post = {
   title: string;
   content: string;
   author: {
-    name: string;
-    surname: string;
+    firstname: string;
+    lastname: string;
     nickname: string;
     email: string;
     password: string;

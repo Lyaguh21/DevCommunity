@@ -1,4 +1,10 @@
-export const Directions = [
+type Directions = {
+  value: string;
+  label: string;
+  bg: string;
+  font: string;
+};
+export const Directions: Directions[] = [
   {
     value: "Frontend",
     label: "Frontend",

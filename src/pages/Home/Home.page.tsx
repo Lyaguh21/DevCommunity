@@ -17,8 +17,8 @@ export default function Home() {
       content:
         "ewdw\ndedeef\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref",
       author: {
-        name: "Тема",
-        surname: "Иванов",
+        firstname: "Тема",
+        lastname: "Иванов",
         nickname: "Lyaguh",
         email: "test@gmail.com",
         password: "11111111",
@@ -35,8 +35,8 @@ export default function Home() {
       content:
         "В этой статье я поделюсь лучшими практиками использования React Hooks, которые помогут вам писать более чистый и эффективный код. Рассмотрим useState, useEffect, useContext и кастомные хуки В этой статье я поделюсь лучшими практиками использования React Hooks, которые помогут вам писать более чистый и эффективный код. Рассмотрим useState, useEffect, useContext и кастомные хуки",
       author: {
-        name: "Тема2",
-        surname: "Иванов2",
+        firstname: "Тема2",
+        lastname: "Иванов2",
         nickname: "Lyaguh2",
         email: "test@gmail.com",
         password: "11111111",
@@ -55,8 +55,8 @@ export default function Home() {
       content:
         "ewdw\ndedeef\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref\n# feffef\n### fref",
       author: {
-        name: "Темe2eа",
-        surname: "e2",
+        firstname: "Темe2eа",
+        lastname: "e2",
         nickname: "212",
         email: "test@gmail.com",
         password: "11111111",

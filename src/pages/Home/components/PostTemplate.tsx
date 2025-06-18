@@ -57,11 +57,11 @@ export default function PostTemplate({ post }: { post: Post }) {
           </Avatar>
           <Box>
             <Text lh="20px" fz={16} fw={600}>
-              {post.author.name} {post.author.surname}
+              {post.author.firstname} {post.author.lastname}
             </Text>
             <Text c="#6B7280" fz={14} lh="20px" component="div">
               <Flex align="center">
-                {post.author.nickname}
+                @{post.author.nickname}
                 <Point fill="#6B7280" stroke="#6B7280" size={16} />
                 {Roles.find((role) => post.author.role == role.value)?.label}
               </Flex>

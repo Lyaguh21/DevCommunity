@@ -84,19 +84,7 @@ export default function Register() {
   };
 
   const handleSubmit = async (values: typeof form.values) => {
-    // setLoading(true);
-    // try {
-    //   // Здесь ваш API запрос для регистрации
-    //   console.log("Регистрационные данные:", values);
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   // После успешной регистрации можно перенаправить пользователя
-    //   // navigate('/dashboard');
-    // } catch (error) {
-    //   console.error("Ошибка регистрации:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
-
+    setLoading(true);
     axios
       .post("http://localhost:3000/signup", {
         nickname: form.values.nickname,
@@ -107,7 +95,8 @@ export default function Register() {
         role: form.values.role,
       })
       .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   };
   return (
     <Box

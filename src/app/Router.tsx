@@ -5,8 +5,8 @@ import AuthLayout from "../layout/AuthLayout";
 import Error from "../pages/Error.page";
 import Login from "../pages/auth/Login.page";
 import Register from "../pages/auth/Register.page";
-import Portfolio from "../pages/Home/profile/Portfolio.page";
-import Profile from "../pages/Home/profile/Profile.page";
+import Portfolio from "../pages/profile/Portfolio.page";
+import Profile from "../pages/profile/Profile.page";
 import CreatePost from "../pages/Home/CreatePost.page";
 import ViewPost from "../pages/Home/ViewPost.page";
 

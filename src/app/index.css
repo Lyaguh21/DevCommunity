@@ -4,9 +4,10 @@ a {
 
 *::-webkit-scrollbar {
   width: 4px; /* ширина scrollbar */
+  height: 1.5px;
 }
 *::-webkit-scrollbar-track {
-  background: #abaeb4; /* цвет дорожки */
+  background: rgb(196, 198, 201); /* цвет дорожки */
 }
 *::-webkit-scrollbar-thumb {
   background-color: #4f46e5; /* цвет плашки */
