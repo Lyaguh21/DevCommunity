@@ -8,7 +8,7 @@ import ModalExit from "../../entities/ModalExit/ModalExit";
 export default function Profile() {
   const user: UserProfile = {
     id: "1",
-    firstName: "Игорь",
+    firstName: "Иdгорь",
     lastName: "Малышев",
     nickname: "Lgorek2280",
     role: "Frontend",
@@ -52,13 +52,17 @@ export default function Profile() {
     ],
   };
   const [opened, { open, close }] = useDisclosure(false);
+
+  const onExit = () => {
+    console.log("EXIT");
+  };
   return (
     <Flex h="100%" mih="94vh" pt={32} direction="column" gap={16}>
       <ProfileTemplate user={user} openModal={open} />
 
-      <PortfolioSection projects={user.portfolio} />
+      <PortfolioSection user={user} />
 
-      <ModalExit close={close} opened={opened} />
+      <ModalExit close={close} opened={opened} onExit={onExit} />
     </Flex>
   );
 }

@@ -3,8 +3,14 @@ import { Project } from "../../../interfaces/Project.interface";
 import classes from "../classes/profile.module.css";
 import { BrandFigma, BrandGithub, Link } from "tabler-icons-react";
 import { NavLink, useNavigate } from "react-router";
-export default function ProfileTemplate({ project }: { project: Project }) {
-  const navigate = useNavigate();
+import { UserProfile } from "../../../interfaces/UserProfile";
+export default function ProfileTemplate({
+  project,
+  user,
+}: {
+  project: Project;
+  user: UserProfile;
+}) {
   return (
     <Box
       key={project.id}
@@ -56,15 +62,14 @@ export default function ProfileTemplate({ project }: { project: Project }) {
           )}
         </Flex>
 
-        <UnstyledButton
-          variant="subtle"
-          c="#4f46e5"
-          p={0}
-          fw={500}
-          onClick={() => navigate(`/portfolio/project/${project.id}`)}
+        <NavLink
+          to={`/portfolio/project/${project.id}`}
+          state={{ author: user }}
         >
-          Открыть
-        </UnstyledButton>
+          <UnstyledButton variant="subtle" c="#4f46e5" p={0} fw={500}>
+            Открыть
+          </UnstyledButton>
+        </NavLink>
       </Flex>
     </Box>
   );

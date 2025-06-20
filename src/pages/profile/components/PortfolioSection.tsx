@@ -1,13 +1,10 @@
 import { Box, Flex, Group, Text, UnstyledButton } from "@mantine/core";
 import classes from "../classes/profile.module.css";
-import { Project } from "../../../interfaces/Project.interface";
+
 import { NavLink } from "react-router";
 import ProjectTemplate from "./ProjectTemplate";
-export default function PortfolioSection({
-  projects,
-}: {
-  projects: Project[];
-}) {
+import { UserProfile } from "../../../interfaces/UserProfile";
+export default function PortfolioSection({ user }: { user: UserProfile }) {
   return (
     <Box
       w={"100%"}
@@ -22,23 +19,27 @@ export default function PortfolioSection({
           Портфолио
         </Text>
         <Text c="#6B7280" fz={16} lh="22px" component="div">
-          {projects.length} проектов
+          {user.portfolio.length} проектов
         </Text>
       </Flex>
       <Group
-        grow={projects.length > 2}
+        grow={user.portfolio.length > 2}
         gap={16}
         mih={374}
         style={{ overflowX: "scroll" }}
         wrap="nowrap"
         py={8}
       >
-        {projects.length === 0 && <Text ta="center">Проектов еще нет</Text>}
+        {user.portfolio.length === 0 && (
+          <Text ta="center">Проектов еще нет</Text>
+        )}
 
-        {projects.length !== 0 &&
-          projects
+        {user.portfolio.length !== 0 &&
+          user.portfolio
             .slice(0, 3)
-            .map((el) => <ProjectTemplate key={el.id} project={el} />)}
+            .map((el) => (
+              <ProjectTemplate key={el.id} project={el} user={user} />
+            ))}
       </Group>
       <Flex justify="flex-end" pt={4}>
         <NavLink to="/portfolio">
