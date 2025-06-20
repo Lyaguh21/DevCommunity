@@ -2,8 +2,9 @@ import { Text, Box, Flex, Image, UnstyledButton } from "@mantine/core";
 import { Project } from "../../../interfaces/Project.interface";
 import classes from "../classes/profile.module.css";
 import { BrandFigma, BrandGithub, Link } from "tabler-icons-react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 export default function ProfileTemplate({ project }: { project: Project }) {
+  const navigate = useNavigate();
   return (
     <Box
       key={project.id}
@@ -54,11 +55,16 @@ export default function ProfileTemplate({ project }: { project: Project }) {
             </NavLink>
           )}
         </Flex>
-        <NavLink to="/">
-          <UnstyledButton variant="subtle" c="#4f46e5" p={0} fw={500}>
-            Открыть
-          </UnstyledButton>
-        </NavLink>
+
+        <UnstyledButton
+          variant="subtle"
+          c="#4f46e5"
+          p={0}
+          fw={500}
+          onClick={() => navigate(`/portfolio/project/${project.id}`)}
+        >
+          Открыть
+        </UnstyledButton>
       </Flex>
     </Box>
   );
