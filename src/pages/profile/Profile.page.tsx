@@ -11,7 +11,7 @@ export default function Profile() {
     firstName: "Игорь",
     lastName: "Малышев",
     nickname: "Lgorek2280",
-    role: "HR",
+    role: "Frontend",
     description:
       " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
     workplace: 'OOO "ZUZU"',
@@ -36,7 +36,7 @@ export default function Profile() {
         id: "3",
         title: "Okoprom",
         description:
-          "Machine tool sail webappffffffffffff fefefew fewfwefwefewfw efwefwe",
+          "В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
         links: ["hhtp://", "hhtp://", "hhtp://"],
         previewImage:
           "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",

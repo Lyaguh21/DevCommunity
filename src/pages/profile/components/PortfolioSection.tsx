@@ -36,7 +36,9 @@ export default function PortfolioSection({
         {projects.length === 0 && <Text ta="center">Проектов еще нет</Text>}
 
         {projects.length !== 0 &&
-          projects.slice(0, 3).map((el) => <ProjectTemplate project={el} />)}
+          projects
+            .slice(0, 3)
+            .map((el) => <ProjectTemplate key={el.id} project={el} />)}
       </Group>
       <Flex justify="flex-end" pt={4}>
         <NavLink to="/portfolio">

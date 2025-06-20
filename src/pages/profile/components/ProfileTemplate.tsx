@@ -4,6 +4,7 @@ import classes from "../classes/profile.module.css";
 import { Roles } from "../../../interfaces/Role";
 import { Edit, Logout } from "tabler-icons-react";
 import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router";
 export default function ProfileTemplate({
   user,
   openModal,
@@ -62,12 +63,14 @@ export default function ProfileTemplate({
         </Flex>
 
         <Flex gap={8} style={{ alignSelf: "self-start" }}>
-          <Button bg="#4f46e5" visibleFrom="sm">
-            <Flex align="center" gap={4}>
-              <Edit size={16} />
-              <Text>Редактировать</Text>
-            </Flex>
-          </Button>
+          <NavLink to="/profile/edit">
+            <Button bg="#4f46e5" visibleFrom="sm">
+              <Flex align="center" gap={4}>
+                <Edit size={16} />
+                <Text>Редактировать</Text>
+              </Flex>
+            </Button>
+          </NavLink>
           <Button bg="#4f46e5" hiddenFrom="sm" px={6} w={36}>
             <Flex align="center" gap={4}>
               <Edit size={16} />

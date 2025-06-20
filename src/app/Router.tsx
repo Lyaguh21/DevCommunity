@@ -9,6 +9,7 @@ import Portfolio from "../pages/portfolio/Portfolio.page";
 import Profile from "../pages/profile/Profile.page";
 import CreatePost from "../pages/Home/CreatePost.page";
 import ViewPost from "../pages/Home/ViewPost.page";
+import EditProfile from "../pages/profile/EditProfile.page";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/profile/edit",
+        element: <EditProfile />,
       },
       {
         path: "/portfolio",
