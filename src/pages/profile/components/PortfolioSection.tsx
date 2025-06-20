@@ -4,7 +4,13 @@ import classes from "../classes/profile.module.css";
 import { NavLink } from "react-router";
 import ProjectTemplate from "./ProjectTemplate";
 import { UserProfile } from "../../../interfaces/UserProfile";
-export default function PortfolioSection({ user }: { user: UserProfile }) {
+export default function PortfolioSection({
+  user,
+  thisAuthor,
+}: {
+  user: UserProfile;
+  thisAuthor: string | undefined;
+}) {
   return (
     <Box
       w={"100%"}
@@ -42,7 +48,7 @@ export default function PortfolioSection({ user }: { user: UserProfile }) {
             ))}
       </Group>
       <Flex justify="flex-end" pt={4}>
-        <NavLink to="/portfolio">
+        <NavLink to={`/portfolio/${thisAuthor}`}>
           <UnstyledButton variant="subtle" c="#4f46e5" p={0} fw={500}>
             Посмотреть все проекты
           </UnstyledButton>

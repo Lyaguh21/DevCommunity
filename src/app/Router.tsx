@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <ViewPost />,
       },
       {
-        path: "/profile",
+        path: "/profile/:id",
         element: <Profile />,
       },
       {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <EditProfile />,
       },
       {
-        path: "/portfolio",
+        path: "/portfolio/:id",
         element: <Portfolio />,
       },
       {

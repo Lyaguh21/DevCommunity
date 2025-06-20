@@ -4,10 +4,12 @@ import ProfileTemplate from "./components/ProfileTemplate";
 import PortfolioSection from "./components/PortfolioSection";
 import { useDisclosure } from "@mantine/hooks";
 import ModalExit from "../../entities/ModalExit/ModalExit";
+import { useParams } from "react-router";
 
 export default function Profile() {
+  const { id } = useParams();
   const user: UserProfile = {
-    id: "1",
+    id: "3",
     firstName: "Иdгорь",
     lastName: "Малышев",
     nickname: "Lgorek2280",
@@ -60,7 +62,7 @@ export default function Profile() {
     <Flex h="100%" mih="94vh" pt={32} direction="column" gap={16}>
       <ProfileTemplate user={user} openModal={open} />
 
-      <PortfolioSection user={user} />
+      <PortfolioSection user={user} thisAuthor={id} />
 
       <ModalExit close={close} opened={opened} onExit={onExit} />
     </Flex>

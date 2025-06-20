@@ -138,7 +138,7 @@ export default function ViewProject() {
 
           <Flex justify="space-between" align="center">
             <NavLink
-              to="/profile"
+              to={`/profile/${author.id}`}
               color="black"
               style={{ textDecoration: "none" }}
             >

@@ -3,7 +3,6 @@ import { Text, Box, Flex } from "@mantine/core";
 import {
   motion,
   useMotionValue,
-  useTransform,
   animate,
   AnimatePresence,
 } from "framer-motion";
@@ -13,8 +12,8 @@ export default function Navigation() {
   const location = useLocation();
   const links = [
     { to: "/", label: "Лента" },
-    { to: "/profile", label: "Профиль" },
-    { to: "/portfolio", label: "Портфолио" },
+    { to: "/profile/1", label: "Профиль" },
+    { to: "/portfolio/1", label: "Портфолио" },
   ];
 
   const refs = useRef<(HTMLAnchorElement | null)[]>([]);
