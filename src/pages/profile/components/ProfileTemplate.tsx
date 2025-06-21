@@ -49,7 +49,9 @@ export default function ProfileTemplate({
               @{user.nickname}
             </Text>
             <Flex align="center">
-              <IconCode size={16} color="#6B7280" />
+              <Flex visibleFrom="xs" justify="center" align="center">
+                <IconCode size={16} color="#6B7280" />
+              </Flex>
               <Text c="#6B7280" fz={16} lh="20px" component="div">
                 Роль:{" "}
                 <Text span c="black">
@@ -59,7 +61,9 @@ export default function ProfileTemplate({
             </Flex>
 
             <Flex align="center">
-              <IconBuilding size={16} color="#6B7280" />
+              <Flex visibleFrom="xs" justify="center" align="center">
+                <IconBuilding size={16} color="#6B7280" />
+              </Flex>
               <Text c="#6B7280" fz={16} lh="20px" component="div">
                 Компания:{" "}
                 <Text span c="black">

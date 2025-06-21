@@ -16,7 +16,7 @@ export default function ProfilePortfolioSection({
       bg="white"
       className={classes.shadow}
       p={24}
-      h={193}
+      h={220}
       miw={327}
       w={{ base: "100%", lg: "327px" }}
     >
@@ -69,6 +69,13 @@ export default function ProfilePortfolioSection({
             <Text>Добавить проект</Text>
           </Flex>
         </Button>
+      </NavLink>
+      <NavLink to={`/profile/${user.id}`}>
+        <Flex align="center" gap={4} mt={8}>
+          <Text ta="center" w="100%" c="#4f46e5">
+            Назад в профиль
+          </Text>
+        </Flex>
       </NavLink>
     </Box>
   );

@@ -12,20 +12,11 @@ import ReactMarkdown from "react-markdown";
 export default function ViewPost() {
   const { id } = useParams();
   const [post, setPost] = useState<Post>({
-    id: 1,
+    id: "1",
     title: "Test",
     content:
       "# React Hooks Tips\n\n- **useState**: Split state logically\n- **useEffect**: Cleanup subscriptions\n- **useMemo**: Optimize calculations\n- **Custom Hooks**: Reuse logic (`useFetch`, `useLocalStorage`)\n\n> Pro tip: Follow Rules of Hooks!",
-    author: {
-      name: "Тема",
-      surname: "Иванов",
-      nickname: "Lyaguh",
-      email: "test@gmail.com",
-      password: "11111111",
-      role: "Frontend",
-      avatar:
-        "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
-    },
+    author: "223",
     type: "Content",
     direction: "Frontend",
     likes: 0,
@@ -33,6 +24,20 @@ export default function ViewPost() {
     previewImage:
       "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
   });
+
+  //по id автора из post получаю автора
+  const author = {
+    id: "3",
+    firstName: "Иdгорь",
+    lastName: "Малышев",
+    nickname: "Lgorek2280",
+    role: "Frontend",
+    description:
+      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
+    workplace: 'OOO "ZUZU"',
+    portfolio: [],
+  };
+
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLikedByUser);
   const handleLike = async () => {
@@ -82,23 +87,29 @@ export default function ViewPost() {
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>
             <Avatar
-              src={post.author.avatar}
-              alt={post.author.nickname}
+              src={author.avatar}
+              alt={author.nickname}
               color="#4f46e5"
               h={40}
               w={40}
             >
-              {post.author.nickname[0]}
+              {author.nickname[0]}
             </Avatar>
             <Box>
               <Text lh="20px" fz={16} fw={600}>
-                {post.author.name} {post.author.surname}
+                {author.firstName} {author.lastName}
               </Text>
-              <Text c="#6B7280" fz={14} lh="20px" component="div">
+              <Text c="#6B7280" fz={14} lh="20px" component="div" fw={600}>
                 <Flex align="center">
-                  {post.author.nickname}
+                  <NavLink
+                    to={`/profile/${author.id}`}
+                    style={{ textDecoration: "none" }}
+                    color="#4f46e5"
+                  >
+                    @{author.nickname}
+                  </NavLink>
                   <Point fill="#6B7280" stroke="#6B7280" size={16} />
-                  {Roles.find((role) => post.author.role == role.value)?.label}
+                  {Roles.find((role) => author.role == role.value)?.label}
                 </Flex>
               </Text>
             </Box>

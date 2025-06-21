@@ -14,7 +14,7 @@ import TypeAndDirection from "./TypeAndDirection";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import classes from "../classes/Home.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import ModalConfirmDelete from "../../../entities/ModalConfilrmDelete/ModalConfirmDelete";
@@ -86,9 +86,15 @@ export default function PostTemplate({ post }: { post: Post }) {
               <Text lh="20px" fz={16} fw={600}>
                 {author.firstName} {author.lastName}
               </Text>
-              <Text c="#6B7280" fz={14} lh="20px" component="div">
+              <Text c="#6B7280" fz={14} fw={600} lh="20px" component="div">
                 <Flex align="center">
-                  @{author.nickname}
+                  <NavLink
+                    to={`/profile/${author.id}`}
+                    style={{ textDecoration: "none" }}
+                    color="#4f46e5"
+                  >
+                    @{author.nickname}
+                  </NavLink>
                   <Point fill="#6B7280" stroke="#6B7280" size={16} />
                   {Roles.find((role) => author.role == role.value)?.label}
                 </Flex>

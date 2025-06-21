@@ -57,9 +57,15 @@ export default function ViewProject() {
                 <Text lh="20px" fz={16} fw={600}>
                   {author.firstName} {author.lastName}
                 </Text>
-                <Text c="#6B7280" fz={14} lh="20px" component="div">
+                <Text c="#6B7280" fz={14} lh="20px" fw={600} component="div">
                   <Flex align="center">
-                    {author.nickname}
+                    <NavLink
+                      to={`/profile/${author.id}`}
+                      style={{ textDecoration: "none" }}
+                      color="#4f46e5"
+                    >
+                      @{author.nickname}
+                    </NavLink>
                     <Point fill="#6B7280" stroke="#6B7280" size={16} />
                     {Roles.find((role) => author.role == role.value)?.label}
                   </Flex>
