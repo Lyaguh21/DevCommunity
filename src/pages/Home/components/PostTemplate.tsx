@@ -23,6 +23,20 @@ export default function PostTemplate({ post }: { post: Post }) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLikedByUser);
   const navigate = useNavigate();
+
+  //по id автора из post получаю автора
+  const author = {
+    id: "3",
+    firstName: "Иdгорь",
+    lastName: "Малышев",
+    nickname: "Lgorek2280",
+    role: "Frontend",
+    description:
+      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
+    workplace: 'OOO "ZUZU"',
+    portfolio: [],
+  };
+
   const handleLike = async () => {
     try {
       const newLikeStatus = !isLiked;
@@ -60,23 +74,23 @@ export default function PostTemplate({ post }: { post: Post }) {
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>
             <Avatar
-              src={post.author.avatar}
-              alt={post.author.nickname}
+              src={author.avatar}
+              alt={author.nickname}
               color="#4f46e5"
               h={40}
               w={40}
             >
-              {post.author.nickname[0]}
+              {author.nickname[0]}
             </Avatar>
             <Box>
               <Text lh="20px" fz={16} fw={600}>
-                {post.author.firstname} {post.author.lastname}
+                {author.firstName} {author.lastName}
               </Text>
               <Text c="#6B7280" fz={14} lh="20px" component="div">
                 <Flex align="center">
-                  @{post.author.nickname}
+                  @{author.nickname}
                   <Point fill="#6B7280" stroke="#6B7280" size={16} />
-                  {Roles.find((role) => post.author.role == role.value)?.label}
+                  {Roles.find((role) => author.role == role.value)?.label}
                 </Flex>
               </Text>
             </Box>

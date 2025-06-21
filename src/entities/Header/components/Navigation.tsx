@@ -73,7 +73,8 @@ export default function Navigation() {
       ))}
 
       <AnimatePresence>
-        {["/", "/profile", "/portfolio"].indexOf(location.pathname) != -1 && (
+        {["/", "/profile/1", "/portfolio/1"].indexOf(location.pathname) !=
+          -1 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -10,18 +10,14 @@ import {
   Text,
 } from "@mantine/core";
 import { NavLink } from "react-router";
-import {
-  ClipboardText,
-  FileArrowRight,
-  FileCheck,
-  UserCircle,
-} from "tabler-icons-react";
+import { FileArrowRight, FileCheck, UserCircle } from "tabler-icons-react";
 import classes from "./classes/AuthStyles.module.css";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { IconArrowRight } from "@tabler/icons-react";
 import { Roles } from "../../interfaces/Role";
 import axios from "axios";
+import { notifications } from "@mantine/notifications";
 
 export default function Register() {
   const [active, setActive] = useState(0);
@@ -32,7 +28,6 @@ export default function Register() {
       nickname: "",
       password: "",
       confirmPassword: "",
-
       email: "",
       firstname: "",
       lastname: "",
@@ -59,13 +54,13 @@ export default function Register() {
 
       if (active === 1) {
         return {
-          email: /^\S+@\S+$/.test(values.email) ? null : "Некорректный email",
-          name:
-            values.firstname.trim().length < 2 ? "Имя слишком короткое" : null,
-          surname:
-            values.lastname.trim().length < 2
+          firstname:
+            values.firstname.trim().length < 3 ? "Имя слишком короткое" : null,
+          lastname:
+            values.lastname.trim().length < 3
               ? "Фамилия слишком короткая"
               : null,
+          email: /^\S+@\S+$/.test(values.email) ? null : "Некорректный email",
           role: values.role !== "" ? null : "Роль не выбрана",
         };
       }
@@ -74,8 +69,24 @@ export default function Register() {
     },
   });
 
+  const handleError = (errors: typeof form.errors) => {
+    // Показываем уведомление для первой ошибки
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      notifications.show({
+        title: "Ошибка",
+        message: firstError,
+        color: "red",
+      });
+    }
+  };
+
   const nextStep = () => {
-    if (form.validate().hasErrors) return;
+    const errors = form.validate();
+    if (errors.hasErrors) {
+      handleError(errors.errors);
+      return;
+    }
     setActive((current) => (current < 2 ? current + 1 : current));
   };
 
@@ -94,10 +105,31 @@ export default function Register() {
         email: form.values.email,
         role: form.values.role,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err))
+      .then((res) => {
+        console.log(res);
+        nextStep();
+      })
+      .catch((err) => {
+        console.error(err);
+        notifications.show({
+          title: "Ошибка регистрации",
+          message: err.response?.data?.message || "Произошла ошибка",
+          color: "red",
+        });
+      })
       .finally(() => setLoading(false));
   };
+
+  // Функция для получения стилей поля с ошибкой
+  const getFieldStyles = (fieldName: string) => ({
+    input: {
+      borderColor: form.errors[fieldName] ? "red" : undefined,
+      "&:focus": {
+        borderColor: form.errors[fieldName] ? "red" : "#4f46e5",
+      },
+    },
+  });
+
   return (
     <Box
       bg="white"
@@ -122,6 +154,7 @@ export default function Register() {
                 <Input.Wrapper
                   label="Никнейм"
                   classNames={{ label: classes.label }}
+                  errorProps={{ style: { display: "none" } }}
                 >
                   <Input
                     w={385}
@@ -129,12 +162,15 @@ export default function Register() {
                     size="lg"
                     c="#4f46e5"
                     radius="6px"
+                    key={form.key("nickname")}
                     {...form.getInputProps("nickname")}
+                    styles={getFieldStyles("nickname")}
                   />
                 </Input.Wrapper>
                 <Input.Wrapper
                   label="Пароль"
                   classNames={{ label: classes.label }}
+                  errorProps={{ style: { display: "none" } }}
                 >
                   <PasswordInput
                     w={385}
@@ -142,21 +178,28 @@ export default function Register() {
                     size="lg"
                     c="#4f46e5"
                     radius="6px"
+                    errorProps={{ style: { display: "none" } }}
+                    key={form.key("password")}
                     {...form.getInputProps("password")}
+                    styles={getFieldStyles("password")}
                   />
                 </Input.Wrapper>
 
                 <Input.Wrapper
                   label="Подтверждение пароля"
                   classNames={{ label: classes.label }}
+                  errorProps={{ style: { display: "none" } }}
                 >
                   <PasswordInput
                     w={385}
                     placeholder="Повторите свой пароль"
                     size="lg"
                     c="#4f46e5"
+                    errorProps={{ style: { display: "none" } }}
                     radius="6px"
+                    key={form.key("confirmPassword")}
                     {...form.getInputProps("confirmPassword")}
+                    styles={getFieldStyles("confirmPassword")}
                   />
                 </Input.Wrapper>
               </Flex>
@@ -170,21 +213,27 @@ export default function Register() {
                   <Input.Wrapper
                     label="Имя"
                     classNames={{ label: classes.label }}
+                    errorProps={{ style: { display: "none" } }}
                   >
                     <Input
                       placeholder="Ваше имя"
                       size="lg"
+                      key={form.key("firstname")}
                       {...form.getInputProps("firstname")}
+                      styles={getFieldStyles("firstname")}
                     />
                   </Input.Wrapper>
                   <Input.Wrapper
                     label="Фамилия"
                     classNames={{ label: classes.label }}
+                    errorProps={{ style: { display: "none" } }}
                   >
                     <Input
                       placeholder="Ваша фамилия"
                       size="lg"
+                      key={form.key("lastname")}
                       {...form.getInputProps("lastname")}
+                      styles={getFieldStyles("lastname")}
                     />
                   </Input.Wrapper>
                 </Flex>
@@ -192,23 +241,30 @@ export default function Register() {
                 <Input.Wrapper
                   label="Email"
                   classNames={{ label: classes.label }}
+                  errorProps={{ style: { display: "none" } }}
                 >
                   <Input
                     placeholder="Ваша почта"
                     size="lg"
+                    key={form.key("email")}
                     {...form.getInputProps("email")}
+                    styles={getFieldStyles("email")}
                   />
                 </Input.Wrapper>
 
                 <Input.Wrapper
                   label="Роль"
                   classNames={{ label: classes.label }}
+                  errorProps={{ style: { display: "none" } }}
                 >
                   <Select
                     data={Roles}
                     {...form.getInputProps("role")}
+                    key={form.key("role")}
                     placeholder="Ваша роль"
                     size="lg"
+                    errorProps={{ style: { display: "none" } }}
+                    styles={getFieldStyles("role")}
                   />
                 </Input.Wrapper>
               </Flex>
@@ -242,16 +298,13 @@ export default function Register() {
             </Button>
             <Button
               loading={loading}
-              onClick={() => {
-                form.onSubmit(handleSubmit)();
-                nextStep();
-              }}
+              onClick={() => form.onSubmit(handleSubmit, handleError)()}
               h={50}
               bg="#4f46e5"
               radius="6px"
               w="50%"
             >
-              Продолжить
+              Зарегистрироваться
             </Button>
           </Flex>
         )}

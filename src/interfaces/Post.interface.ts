@@ -1,16 +1,8 @@
 export type Post = {
-  id: number;
+  id: string;
   title: string;
   content: string;
-  author: {
-    firstname: string;
-    lastname: string;
-    nickname: string;
-    email: string;
-    password: string;
-    role: string;
-    avatar?: string;
-  };
+  author: string;
   type: string;
   direction: string;
   likes: number;
