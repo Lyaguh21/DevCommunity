@@ -50,7 +50,7 @@ export default function CreatePost() {
     console.log(form.values);
   };
   return (
-    <Box py={32}>
+    <Box py={16}>
       <Box bg="white" p={24} className={classes.shadow}>
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
           Создание поста

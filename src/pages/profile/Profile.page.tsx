@@ -59,7 +59,7 @@ export default function Profile() {
     console.log("EXIT");
   };
   return (
-    <Flex h="100%" mih="94vh" pt={32} direction="column" gap={16}>
+    <Flex h="100%" mih="94vh" pt={16} direction="column" gap={16}>
       <ProfileTemplate user={user} openModal={open} />
 
       <PortfolioSection user={user} thisAuthor={id} />

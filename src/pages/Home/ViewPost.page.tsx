@@ -77,7 +77,7 @@ export default function ViewPost() {
   };
 
   return (
-    <Box pt={32} mih="94vh">
+    <Box pt={16} mih="94vh">
       <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>

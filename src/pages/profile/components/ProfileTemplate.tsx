@@ -5,6 +5,7 @@ import { Roles } from "../../../interfaces/Role";
 import { Edit, Logout } from "tabler-icons-react";
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router";
+import { IconBuilding, IconCode } from "@tabler/icons-react";
 export default function ProfileTemplate({
   user,
   openModal,
@@ -47,18 +48,25 @@ export default function ProfileTemplate({
             <Text c="#6B7280" fz={16} lh="20px" component="div">
               @{user.nickname}
             </Text>
-            <Text c="#6B7280" fz={16} lh="20px" component="div">
-              Роль:{" "}
-              <Text span c="black">
-                {Roles.find((role) => user.role == role.value)?.label}
+            <Flex align="center">
+              <IconCode size={16} color="#6B7280" />
+              <Text c="#6B7280" fz={16} lh="20px" component="div">
+                Роль:{" "}
+                <Text span c="black">
+                  {Roles.find((role) => user.role == role.value)?.label}
+                </Text>
               </Text>
-            </Text>
-            <Text c="#6B7280" fz={16} lh="20px" component="div">
-              Компания:{" "}
-              <Text span c="black">
-                {user.workplace}
+            </Flex>
+
+            <Flex align="center">
+              <IconBuilding size={16} color="#6B7280" />
+              <Text c="#6B7280" fz={16} lh="20px" component="div">
+                Компания:{" "}
+                <Text span c="black">
+                  {user.workplace}
+                </Text>
               </Text>
-            </Text>
+            </Flex>
           </Flex>
         </Flex>
 

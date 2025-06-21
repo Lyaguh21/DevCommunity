@@ -71,7 +71,7 @@ export default function Home() {
   }, [filters]);
 
   return (
-    <Flex direction="column" py={32} mih="94vh">
+    <Flex direction="column" py={16} mih="94vh">
       <FilterSection filters={filters} setFilters={setFilters} />
       {filteredData.length === 0 && (
         <Center>

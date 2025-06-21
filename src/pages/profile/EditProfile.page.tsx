@@ -60,7 +60,7 @@ export default function EditProfile() {
     console.log(form.values);
   };
   return (
-    <Box py={32} key={user.id}>
+    <Box py={16} key={user.id}>
       <Box bg="white" p={24} className={classes.shadow}>
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
           Редактирование профиля
@@ -229,7 +229,7 @@ export default function EditProfile() {
           </Flex>
 
           <Flex justify="flex-end" mt={24} gap={16}>
-            <NavLink to="/profile">
+            <NavLink to={`/profile/${user.id}`}>
               <Button
                 h={50}
                 fz={18}
