@@ -5,8 +5,10 @@ import PortfolioSection from "./components/PortfolioSection";
 import { useDisclosure } from "@mantine/hooks";
 import ModalExit from "../../entities/ModalExit/ModalExit";
 import { useParams } from "react-router";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Profile() {
+  const { clearUser } = useAuthStore();
   const { id } = useParams();
   const user: UserProfile = {
     id: "3",
@@ -56,10 +58,11 @@ export default function Profile() {
   const [opened, { open, close }] = useDisclosure(false);
 
   const onExit = () => {
-    console.log("EXIT");
+    clearUser();
+    close();
   };
   return (
-    <Flex h="100%" mih="94vh" pt={16} direction="column" gap={16}>
+    <Flex h="100%" mih="94vh" py={16} direction="column" gap={16}>
       <ProfileTemplate user={user} openModal={open} />
 
       <PortfolioSection user={user} thisAuthor={id} />

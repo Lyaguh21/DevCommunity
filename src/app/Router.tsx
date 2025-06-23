@@ -11,6 +11,7 @@ import CreatePost from "../pages/Home/CreatePost.page";
 import ViewPost from "../pages/Home/ViewPost.page";
 import EditProfile from "../pages/profile/EditProfile.page";
 import ViewProject from "../pages/portfolio/ViewProject.page";
+import RequireAuth from "./RequireAuth";
 
 const router = createBrowserRouter([
   {
@@ -18,32 +19,37 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/createPost",
-        element: <CreatePost />,
-      },
-      {
-        path: "/post/:id",
-        element: <ViewPost />,
-      },
-      {
-        path: "/profile/:id",
-        element: <Profile />,
-      },
-      {
-        path: "/profile/edit",
-        element: <EditProfile />,
-      },
-      {
-        path: "/portfolio/:id",
-        element: <Portfolio />,
-      },
-      {
-        path: "/portfolio/project/:id",
-        element: <ViewProject />,
+        element: <RequireAuth />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            path: "/createPost",
+            element: <CreatePost />,
+          },
+          {
+            path: "/post/:id",
+            element: <ViewPost />,
+          },
+          {
+            path: "/profile/:id",
+            element: <Profile />,
+          },
+          {
+            path: "/profile/edit",
+            element: <EditProfile />,
+          },
+          {
+            path: "/portfolio/:id",
+            element: <Portfolio />,
+          },
+          {
+            path: "/portfolio/project/:id",
+            element: <ViewProject />,
+          },
+        ],
       },
     ],
   },

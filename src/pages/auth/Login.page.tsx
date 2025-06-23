@@ -7,11 +7,56 @@ import {
   PasswordInput,
   Text,
 } from "@mantine/core";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { UserCircle } from "tabler-icons-react";
 import classes from "./classes/AuthStyles.module.css";
+import { useForm } from "@mantine/form";
+import { useState } from "react";
+import axios from "axios";
+import { API } from "../../app/helpers";
+import { notifications } from "@mantine/notifications";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Login() {
+  const { setUser } = useAuthStore();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const form = useForm({
+    initialValues: {
+      nickname: "",
+      password: "",
+    },
+  });
+
+  const handleSubmit = async (values: typeof form.values) => {
+    setLoading(true);
+    axios
+      .post(`${API}/login`, {
+        nickname: form.values.nickname,
+        password: form.values.password,
+      })
+      .then((res) => {
+        setLoading(true);
+        setUser({
+          id: res.data.id,
+          token: res.data.JWTtoken,
+          role: res.data.role,
+          nickname: res.data.nickname,
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error(err);
+        notifications.show({
+          title: "Ошибка регистрации",
+          message: err.response?.data?.message || "Произошла ошибка",
+          color: "red",
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <Box
       bg="white"
@@ -37,6 +82,7 @@ export default function Login() {
               size="lg"
               c="#4f46e5"
               radius="6px"
+              {...form.getInputProps("nickname")}
             />
           </Input.Wrapper>
           <Input.Wrapper label="Пароль" classNames={{ label: classes.label }}>
@@ -46,10 +92,17 @@ export default function Login() {
               size="lg"
               c="#4f46e5"
               radius="6px"
+              {...form.getInputProps("password")}
             />
           </Input.Wrapper>
 
-          <Button type="submit" fullWidth h={50} bg="#4f46e5" radius="6px">
+          <Button
+            onClick={handleSubmit}
+            fullWidth
+            h={50}
+            bg="#4f46e5"
+            radius="6px"
+          >
             Войти
           </Button>
 

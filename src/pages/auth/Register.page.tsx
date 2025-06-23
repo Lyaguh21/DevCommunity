@@ -18,10 +18,13 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { Roles } from "../../interfaces/Role";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { API } from "../../app/helpers";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Register() {
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useAuthStore();
 
   const form = useForm({
     initialValues: {
@@ -97,16 +100,22 @@ export default function Register() {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .post("http://localhost:3000/signup", {
+      .post(`${API}/register`, {
         nickname: form.values.nickname,
         password: form.values.password,
-        firstname: form.values.firstname,
-        lastname: form.values.lastname,
+        firstName: form.values.firstname,
+        lastName: form.values.lastname,
         email: form.values.email,
         role: form.values.role,
       })
       .then((res) => {
-        console.log(res);
+        setLoading(true);
+        setUser({
+          id: res.data.id,
+          token: res.data.JWTtoken,
+          role: res.data.role,
+          nickname: res.data.nickname,
+        });
         nextStep();
       })
       .catch((err) => {

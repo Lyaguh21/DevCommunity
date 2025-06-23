@@ -20,7 +20,7 @@ export default function PortfolioSection({
       pb={12}
       mb={24}
     >
-      <Flex align="center" justify="space-between" mb={4}>
+      <Flex align="center" justify="space-between">
         <Text fz={24} fw={700}>
           Портфолио
         </Text>

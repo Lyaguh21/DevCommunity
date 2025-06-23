@@ -7,13 +7,15 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { useAuthStore } from "../../../stores/authStore";
 
 export default function Navigation() {
+  const { user } = useAuthStore();
   const location = useLocation();
   const links = [
     { to: "/", label: "Лента" },
-    { to: "/profile/1", label: "Профиль" },
-    { to: "/portfolio/1", label: "Портфолио" },
+    { to: `/profile/${user?.id}`, label: "Профиль" },
+    { to: `/portfolio/${user?.id}`, label: "Портфолио" },
   ];
 
   const refs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -73,8 +75,9 @@ export default function Navigation() {
       ))}
 
       <AnimatePresence>
-        {["/", "/profile/1", "/portfolio/1"].indexOf(location.pathname) !=
-          -1 && (
+        {["/", `/profile/${user?.id}`, `/portfolio/${user?.id}`].indexOf(
+          location.pathname
+        ) != -1 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -4,6 +4,7 @@ import { Router } from "./Router";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 
+
 export default function App() {
   return (
     <MantineProvider forceColorScheme="light">
