@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Input,
+  LoadingOverlay,
   PasswordInput,
   Text,
 } from "@mantine/core";
@@ -64,6 +65,11 @@ export default function Login() {
       style={{ borderRadius: "12px" }}
       className={classes.shadow}
     >
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
+      />
       <Center>
         <UserCircle height={48} width={48} color="#4f46e5" />
       </Center>

@@ -12,6 +12,7 @@ import ViewPost from "../pages/Home/ViewPost.page";
 import EditProfile from "../pages/profile/EditProfile.page";
 import ViewProject from "../pages/portfolio/ViewProject.page";
 import RequireAuth from "./RequireAuth";
+import CreateProject from "../pages/portfolio/CreateProject.page";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
           {
             path: "/portfolio/project/:id",
             element: <ViewProject />,
+          },
+          {
+            path: "/portfolio/createProject",
+            element: <CreateProject />,
           },
         ],
       },

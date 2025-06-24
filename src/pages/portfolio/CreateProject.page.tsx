@@ -6,60 +6,114 @@ import {
   Grid,
   Input,
   LoadingOverlay,
-  Select,
   Text,
   Textarea,
 } from "@mantine/core";
-import { NavLink } from "react-router";
-
-import classes from "./classes/Home.module.css";
-import { TypePost } from "../../interfaces/Type";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import "@mantine/dropzone/styles.css";
-import { useForm } from "@mantine/form";
-import { Directions } from "../../interfaces/Directions";
+import { NavLink } from "react-router";
+import classes from "./classes/portfolio.module.css";
+import { notifications } from "@mantine/notifications";
+import { useAuthStore } from "../../stores/authStore";
+import axios from "axios";
+import { API } from "../../app/helpers";
 
-export default function CreatePost() {
+export default function CreateProject() {
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuthStore();
 
   const form = useForm({
     initialValues: {
       title: "",
       content: "",
-      type: "",
-      direction: "",
+      gitHubLink: "",
+      demoLink: "",
+      designLink: "",
+      previewImage: "",
+    },
+    validate: {
+      title: (value) =>
+        value.trim().length < 3 ? "Название слишком короткое" : null,
+
+      gitHubLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
+
+      demoLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
+
+      designLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
     },
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    // setLoading(true);
-    // try {
-    //   // Здесь ваш API запрос для регистрации
-    //   console.log("Регистрационные данные:", values);
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   // После успешной регистрации можно перенаправить пользователя
-    //   // navigate('/dashboard');
-    // } catch (error) {
-    //   console.error("Ошибка регистрации:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
-    console.log(form.values);
+  const handleError = (errors: typeof form.errors) => {
+    // Показываем уведомление для первой ошибки
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      notifications.show({
+        title: "Ошибка",
+        message: firstError,
+        color: "red",
+      });
+    }
   };
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const errors = form.validate();
+    if (errors.hasErrors) {
+      handleError(errors.errors);
+      return;
+    }
+    setLoading(true);
+    axios
+      .post(`${API}/users/${user?.id}/portfolio`, {
+        title: form.values.title,
+        description: form.values.content,
+        links: [
+          form.values.gitHubLink === "" ? null : form.values.gitHubLink,
+          form.values.demoLink === "" ? null : form.values.demoLink,
+          form.values.designLink === "" ? null : form.values.designLink,
+        ],
+        previewImage: desktopFile,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
-    <Box py={16}>
+    <Box py={16} mih="94vh">
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
+      />
       <Box bg="white" p={24} className={classes.shadow}>
-        <LoadingOverlay
-          visible={loading}
-          zIndex={1000}
-          overlayProps={{ radius: "sm", blur: 1 }}
-        />
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
-          Создание поста
+          Добавление проекта
         </Text>
         <form>
           <Flex gap={16} mb={16} wrap={{ base: "wrap", md: "nowrap" }}>
@@ -67,10 +121,11 @@ export default function CreatePost() {
               <Input.Wrapper
                 label="Название"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите название поста"
+                  placeholder="Введите название проекта"
                   size="lg"
                   c="#4f46e5"
                   radius="6px"
@@ -79,34 +134,49 @@ export default function CreatePost() {
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Направление поста"
+                label="Github "
                 classNames={{ label: classes.label }}
               >
-                <Select
-                  data={Directions}
+                <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите направление поста"
+                  placeholder="Введите ссылку на Github"
                   size="lg"
-                  {...form.getInputProps("direction")}
+                  c="#4f46e5"
+                  radius="6px"
+                  maxLength={100}
+                  {...form.getInputProps("gitHubLink")}
+                />
+              </Input.Wrapper>
+              <Input.Wrapper label="Демо" classNames={{ label: classes.label }}>
+                <Input
+                  w={{ md: "385px", base: "100%" }}
+                  placeholder="Введите ссылку на демо проекта"
+                  size="lg"
+                  c="#4f46e5"
+                  radius="6px"
+                  maxLength={100}
+                  {...form.getInputProps("demoLink")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Тип поста"
+                label="Дизайн"
                 classNames={{ label: classes.label }}
               >
-                <Select
+                <Input
                   w={{ md: "385px", base: "100%" }}
-                  data={TypePost}
-                  placeholder="Введите тип поста"
+                  placeholder="Введите ссылку на дизайн проекта"
                   size="lg"
-                  {...form.getInputProps("type")}
+                  c="#4f46e5"
+                  radius="6px"
+                  maxLength={100}
+                  {...form.getInputProps("designLink")}
                 />
               </Input.Wrapper>
             </Flex>
 
             <Flex direction="column" w="100%">
               <Text fz={18} fw={500}>
-                Изображение (опционально)
+                Изображение
               </Text>
               <Dropzone
                 classNames={{ root: classes.input }}
@@ -115,7 +185,7 @@ export default function CreatePost() {
                   setDesktopFile(files[0]),
                     setDesktopPreview(URL.createObjectURL(files[0]));
                 }}
-                h={{ md: "100%", base: "240px" }}
+                h={240}
                 w="100%"
                 styles={{
                   root: desktopPreview
@@ -187,24 +257,24 @@ export default function CreatePost() {
                   </Box>
                 )}
               </Dropzone>
+              <Textarea
+                rows={8}
+                label="Текст"
+                size="lg"
+                placeholder="Напишите текст к своему посту в формате Markdown
+  
+  Пример:
+  # Заголовок
+  ## Подзаголовок
+  **Жирный текст**
+  [Ссылка](https://example.com)
+  *Курсив*
+  `код`
+  > Цитата"
+                {...form.getInputProps("content")}
+              />
             </Flex>
           </Flex>
-          <Textarea
-            rows={8}
-            label="Текст"
-            size="lg"
-            placeholder="Напишите текст к своему посту в формате Markdown
-
-Пример:
-# Заголовок
-## Подзаголовок
-**Жирный текст**
-[Ссылка](https://example.com)
-*Курсив*
-`код`
-> Цитата"
-            {...form.getInputProps("content")}
-          />
 
           <Flex justify="flex-end" mt={24} gap={16}>
             <NavLink to="/">
@@ -225,7 +295,7 @@ export default function CreatePost() {
               w={150}
               bg="#4f46e5"
               radius="6px"
-              onClick={() => form.onSubmit(handleSubmit)()}
+              onClick={() => form.onSubmit(handleSubmit, handleError)()}
             >
               Создать
             </Button>

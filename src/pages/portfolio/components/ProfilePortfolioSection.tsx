@@ -16,6 +16,7 @@ export default function ProfilePortfolioSection({
       bg="white"
       className={classes.shadow}
       p={24}
+      pt={20}
       h={220}
       miw={327}
       w={{ base: "100%", lg: "327px" }}
@@ -62,7 +63,7 @@ export default function ProfilePortfolioSection({
           </Flex>
         </Flex>
       </Flex>
-      <NavLink to="/createProject">
+      <NavLink to="/portfolio/createProject">
         <Button bg="#4f46e5" fullWidth mt={16}>
           <Flex align="center" gap={4}>
             <Plus size={16} />

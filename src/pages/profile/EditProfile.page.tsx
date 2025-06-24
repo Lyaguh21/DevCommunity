@@ -14,7 +14,7 @@ import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import classes from "./classes/profile.module.css";
 import { Roles } from "../../interfaces/Role";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { NavLink } from "react-router";
 
@@ -23,6 +23,8 @@ export default function EditProfile() {
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [desktopLoading, setDesktopLoading] = useState(false);
   const user: UserProfile = {
+    avatar:
+      "https://avatars.mds.yandex.net/i?id=41370a3cbd2d7f483392c8862e2a0d05c6df179e-4571633-images-thumbs&n=13",
     id: "1",
     firstName: "Игорь",
     lastName: "Малышев",
@@ -36,14 +38,15 @@ export default function EditProfile() {
   const form = useForm({
     initialValues: {
       avatar: user.avatar,
-      firstname: user.firstName,
-      lastname: user.lastName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       nickname: user.nickname,
       role: user.role,
       description: user.description,
       workplace: user.workplace,
     },
   });
+
   const handleSubmit = async (values: typeof form.values) => {
     // setLoading(true);
     // try {
@@ -76,7 +79,7 @@ export default function EditProfile() {
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
-                  {...form.getInputProps("firstname")}
+                  {...form.getInputProps("firstName")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
@@ -90,7 +93,7 @@ export default function EditProfile() {
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
-                  {...form.getInputProps("lastname")}
+                  {...form.getInputProps("lastName")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
@@ -104,6 +107,7 @@ export default function EditProfile() {
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
+                  disabled
                   {...form.getInputProps("nickname")}
                 />
               </Input.Wrapper>

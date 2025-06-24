@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Input,
+  LoadingOverlay,
   PasswordInput,
   Select,
   Stepper,
@@ -147,6 +148,11 @@ export default function Register() {
       mih={575}
       className={classes.shadow}
     >
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
+      />
       <Center>
         <UserCircle height={48} width={48} color="#4f46e5" />
       </Center>

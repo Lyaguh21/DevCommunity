@@ -76,7 +76,7 @@ export default function Portfolio() {
           bg="white"
           className={classes.shadow}
           p={24}
-          pt={24}
+          pt={20}
           w="100%"
           mih="90vh"
         >
