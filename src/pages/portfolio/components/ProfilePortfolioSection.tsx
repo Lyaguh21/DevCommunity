@@ -18,35 +18,35 @@ export default function ProfilePortfolioSection({
       p={24}
       pt={20}
       h={220}
-      miw={327}
+      miw={400}
       w={{ base: "100%", lg: "327px" }}
     >
       <Flex align="center" justify="space-between">
         <Flex align="center" gap={8}>
           <Avatar
-            src={user.avatar}
-            alt={user.nickname}
+            // src={user.avatar}
+            // alt={user.nickname}
             color="#4f46e5"
             h={60}
             w={60}
           >
             <Text fz={24} fw={700}>
-              {user.nickname[0]}
+              {/* {user.nickname[0]} */}d
             </Text>
           </Avatar>
           <Flex direction="column" gap={4}>
             <Text lh="20px" fz={24} fw={700}>
-              {user.firstName} {user.lastName}
+              {user?.firstName} {user?.lastName}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
-              @{user.nickname}
+              {/* @{user.nickname} */}d
             </Text>
             <Flex align="center">
               <IconCode size={16} color="#6B7280" />
               <Text c="#6B7280" fz={16} lh="20px" component="div">
                 Роль:{" "}
                 <Text span c="black">
-                  {Roles.find((role) => user.role == role.value)?.label}
+                  {Roles.find((role) => user?.role == role.value)?.label}
                 </Text>
               </Text>
             </Flex>
@@ -56,7 +56,7 @@ export default function ProfilePortfolioSection({
               <Text c="#6B7280" fz={16} lh="20px" component="div">
                 Компания:{" "}
                 <Text span c="black">
-                  {user.workplace}
+                  {user?.workplace}
                 </Text>
               </Text>
             </Flex>
@@ -71,7 +71,7 @@ export default function ProfilePortfolioSection({
           </Flex>
         </Button>
       </NavLink>
-      <NavLink to={`/profile/${user.id}`}>
+      <NavLink to={`/profile/${user?.userId}`}>
         <Flex align="center" gap={4} mt={8}>
           <Text ta="center" w="100%" c="#4f46e5">
             Назад в профиль

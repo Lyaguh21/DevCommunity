@@ -5,11 +5,24 @@ import { Logout, X } from "tabler-icons-react";
 
 import classes from "../classes/Header.module.css";
 import { useAuthStore } from "../../../stores/authStore";
-import { useDisclosure } from "@mantine/hooks";
+import { useClickOutside, useDisclosure } from "@mantine/hooks";
 import ModalExit from "../../ModalExit/ModalExit";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../../app/helpers";
+import { UserProfile } from "../../../interfaces/UserProfile";
 export default function InfoMenu({ setVisibleInfo }) {
   const [opened, { open, close }] = useDisclosure(false);
+  const [data, setData] = useState<UserProfile>();
   const { user, isAuthenticated, clearUser } = useAuthStore();
+
+  const menuRef = useClickOutside(() => setVisibleInfo(false));
+  useEffect(() => {
+    axios.get(`${API}/profiles/${user?.id}`).then((res) => {
+      const userData = res.data;
+      setData(userData);
+    });
+  }, [user?.id]);
 
   const onExit = () => {
     clearUser();
@@ -20,6 +33,7 @@ export default function InfoMenu({ setVisibleInfo }) {
     <>
       <ModalExit close={close} opened={opened} onExit={onExit} />
       <motion.div
+        ref={menuRef}
         initial={{ x: 300, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: 300, opacity: 0 }}
@@ -42,7 +56,9 @@ export default function InfoMenu({ setVisibleInfo }) {
               <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
                 {user?.nickname[0]}
               </Avatar>
-              <Text fw={500}>@{user?.nickname}</Text>
+              <Text fw={500}>
+                {data?.firstName} {data?.lastName}
+              </Text>
             </Flex>
             <X onClick={() => setVisibleInfo(false)} />
           </Flex>

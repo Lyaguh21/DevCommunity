@@ -1,71 +1,54 @@
-import { Flex } from "@mantine/core";
-import { UserProfile } from "../../interfaces/UserProfile";
+import { Center, Flex, Loader } from "@mantine/core";
+
 import ProfileTemplate from "./components/ProfileTemplate";
-import PortfolioSection from "./components/PortfolioSection";
 import { useDisclosure } from "@mantine/hooks";
 import ModalExit from "../../entities/ModalExit/ModalExit";
 import { useParams } from "react-router";
 import { useAuthStore } from "../../stores/authStore";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../app/helpers";
+import { UserProfile } from "../../interfaces/UserProfile";
+import PortfolioSection from "./components/PortfolioSection";
 
 export default function Profile() {
+  const [user, setUser] = useState<UserProfile>();
+  const [loading, setLoading] = useState(true);
   const { clearUser } = useAuthStore();
   const { id } = useParams();
-  const user: UserProfile = {
-    id: "3",
-    firstName: "Иdгорь",
-    lastName: "Малышев",
-    nickname: "Lgorek2280",
-    role: "Frontend",
-    description:
-      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-    workplace: 'OOO "ZUZU"',
-    portfolio: [
-      {
-        id: "1",
-        title: "Okoprom",
-        description: "Machine tool sail webapp",
-        links: ["hhtp://", null, "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "2",
-        title: "Okoprom",
 
-        links: [null, null, null],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "3",
-        title: "Okoprom",
-        description:
-          "В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-        links: ["hhtp://", "hhtp://", "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "4",
-        title: "Okoprom",
-        description: "Machine tool sail webapp",
-        links: ["hhtp://", "hhtp://", "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-    ],
-  };
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${API}/profiles/${id}`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
   const [opened, { open, close }] = useDisclosure(false);
 
   const onExit = () => {
     clearUser();
     close();
   };
+
+  if (loading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader size="xl" variant="dots" />
+      </Center>
+    );
+  }
+
   return (
     <Flex h="100%" mih="94vh" py={16} direction="column" gap={16}>
-      <ProfileTemplate user={user} openModal={open} />
-
-      <PortfolioSection user={user} thisAuthor={id} />
+      <ProfileTemplate ThisUser={user} openModal={open} />
+      <PortfolioSection ThisUser={user} thisAuthor={id} />
 
       <ModalExit close={close} opened={opened} onExit={onExit} />
     </Flex>

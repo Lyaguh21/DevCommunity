@@ -8,6 +8,7 @@ import {
   Select,
   Grid,
   ActionIcon,
+  LoadingOverlay,
 } from "@mantine/core";
 import { UserProfile } from "../../interfaces/UserProfile";
 import { useForm } from "@mantine/form";
@@ -17,54 +18,82 @@ import { Roles } from "../../interfaces/Role";
 import { useEffect, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { NavLink } from "react-router";
+import { useAuthStore } from "../../stores/authStore";
+import axios from "axios";
+import { API } from "../../app/helpers";
+import { notifications } from "@mantine/notifications";
 
 export default function EditProfile() {
+  const [ThisUser, setThisUser] = useState<UserProfile>();
+  const { user } = useAuthStore();
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
-  const [desktopLoading, setDesktopLoading] = useState(false);
-  const user: UserProfile = {
-    avatar:
-      "https://avatars.mds.yandex.net/i?id=41370a3cbd2d7f483392c8862e2a0d05c6df179e-4571633-images-thumbs&n=13",
-    id: "1",
-    firstName: "Игорь",
-    lastName: "Малышев",
-    nickname: "Lgorek2280",
-    role: "Frontend",
-    description:
-      "В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-    workplace: 'OOO "ZUZU"',
-    portfolio: [],
-  };
+  const [loading, setLoading] = useState(false);
+
   const form = useForm({
     initialValues: {
-      avatar: user.avatar,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      nickname: user.nickname,
-      role: user.role,
-      description: user.description,
-      workplace: user.workplace,
+      // avatar: "",
+      firstName: "",
+      lastName: "",
+      nickname: "",
+      role: "",
+      description: "",
+      workplace: "",
     },
   });
 
+  useEffect(() => {
+    setLoading(true);
+
+    axios
+      .get(`${API}/profiles/${user?.id}`)
+      .then((res) => {
+        const userData = res.data;
+        setThisUser(userData);
+
+        // Обновляем значения формы
+        form.setValues({
+          // avatar: userData.avatar || "",
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          nickname: userData.nickname || "",
+          role: userData.role || "",
+          description: userData.description || "",
+          workplace: userData.workplace || "",
+        });
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  }, [user?.id]);
+
   const handleSubmit = async (values: typeof form.values) => {
-    // setLoading(true);
-    // try {
-    //   // Здесь ваш API запрос для регистрации
-    //   console.log("Регистрационные данные:", values);
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   // После успешной регистрации можно перенаправить пользователя
-    //   // navigate('/dashboard');
-    // } catch (error) {
-    //   console.error("Ошибка регистрации:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
-    console.log(form.values);
+    setLoading(true);
+    axios
+      .patch(`${API}/profiles/${user?.id}`, {
+        firstName: form.values.firstName,
+        lastName: form.values.lastName,
+        description: form.values.description,
+        workplace: form.values.workplace,
+        role: form.values.role,
+      })
+      .then(() =>
+        notifications.show({
+          title: "Успешно",
+          message: "Профиль обновлен!",
+          color: "green",
+        })
+      )
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   };
   return (
-    <Box py={16} key={user.id}>
+    <Box py={16} mih="94vh" key={ThisUser?.id}>
       <Box bg="white" p={24} className={classes.shadow}>
+        <LoadingOverlay
+          visible={loading}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 1 }}
+        />
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
           Редактирование профиля
         </Text>
@@ -144,7 +173,6 @@ export default function EditProfile() {
               <Dropzone
                 classNames={{ root: classes.input }}
                 accept={IMAGE_MIME_TYPE}
-                loading={desktopLoading}
                 onDrop={(files) => {
                   setDesktopFile(files[0]),
                     setDesktopPreview(URL.createObjectURL(files[0]));
@@ -233,7 +261,7 @@ export default function EditProfile() {
           </Flex>
 
           <Flex justify="flex-end" mt={24} gap={16}>
-            <NavLink to={`/profile/${user.id}`}>
+            <NavLink to={`/profile/${ThisUser?.userId}`}>
               <Button
                 h={50}
                 fz={18}

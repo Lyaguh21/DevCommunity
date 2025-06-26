@@ -13,65 +13,31 @@ import {
 import ProfilePortfolioSection from "./components/ProfilePortfolioSection";
 import ProjectTemplate from "../profile/components/ProjectTemplate";
 import classes from "./classes/portfolio.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../app/helpers";
 export default function Portfolio() {
   const { id } = useParams();
-  //Получаю инфу о пользователе по id
-  const user: UserProfile = {
-    id: "3",
-    firstName: "Иdгорь",
-    lastName: "Малышев",
-    nickname: "Lgorek2280",
-    role: "Frontend",
-    description:
-      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-    workplace: 'OOO "ZUZU"',
-    portfolio: [
-      {
-        id: "1",
-        title: "Okoprom",
-        description: "Machine tool sail webapp",
-        links: ["hhtp://", null, "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "2",
-        title: "Okoprom",
-        links: [null, null, null],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "3",
-        title: "Okoprom",
-        description:
-          "В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-        links: ["hhtp://", "hhtp://", "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "4",
-        title: "Okoprom",
-        description: "Machine tool sail webapp",
-        links: ["hhtp://", "hhtp://", "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-      {
-        id: "5",
-        title: "Okoprom",
-        description: "Machine tool sail webapp",
-        links: ["hhtp://", null, "hhtp://"],
-        previewImage:
-          "https://i.pinimg.com/originals/db/46/90/db46900efc60e41a87a1274fecebc977.jpg",
-      },
-    ],
-  };
+  const [loading, setLoading] = useState(false);
+  const [ThisUser, setThisUser] = useState<UserProfile>();
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${API}/profiles/${id}`)
+      .then((res) => {
+        setThisUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
   return (
     <Box h="100%" mih="94vh" py={16}>
       <Flex w="100%" gap={16} wrap={{ base: "wrap", lg: "nowrap" }}>
-        <ProfilePortfolioSection user={user} />
+        <ProfilePortfolioSection user={ThisUser} />
         <Box
           bg="white"
           className={classes.shadow}
@@ -85,19 +51,19 @@ export default function Portfolio() {
               Портфолио
             </Text>
             <Text c="#6B7280" fz={16} lh="22px" component="div">
-              {user.portfolio.length} проектов
+              {ThisUser?.portfolio.length} проектов
             </Text>
           </Flex>
 
-          {user.portfolio.length === 0 && (
+          {ThisUser?.portfolio.length === 0 && (
             <Text ta="center" mt="40%">
               Проектов еще нет
             </Text>
           )}
 
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" w="100%">
-            {user.portfolio.map((el) => (
-              <ProjectTemplate user={user} project={el} />
+            {ThisUser?.portfolio.map((el) => (
+              <ProjectTemplate user={ThisUser} project={el} />
             ))}
           </SimpleGrid>
         </Box>
