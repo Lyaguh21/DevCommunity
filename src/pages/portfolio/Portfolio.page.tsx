@@ -1,14 +1,6 @@
 import { NavLink, useParams } from "react-router";
 import { UserProfile } from "../../interfaces/UserProfile";
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  SimpleGrid,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
+import { Box, Flex, SimpleGrid, Text } from "@mantine/core";
 
 import ProfilePortfolioSection from "./components/ProfilePortfolioSection";
 import ProjectTemplate from "../profile/components/ProjectTemplate";

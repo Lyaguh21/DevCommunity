@@ -178,6 +178,7 @@ export default function EditProfile() {
                     setDesktopPreview(URL.createObjectURL(files[0]));
                 }}
                 h={{ md: "240px", base: "240px" }}
+                maxSize={2 * 1024 * 1024}
                 w="100%"
                 styles={{
                   root: desktopPreview
@@ -200,7 +201,7 @@ export default function EditProfile() {
                         Поддерживаемые форматы: jpg, jpeg, png
                       </Text>
                       <Text ta={"center"} fz={18} c="#b5b6bd">
-                        Максимальный размер файла 5 MB
+                        Максимальный размер файла 2 MB
                       </Text>
                     </Grid.Col>
                   </Grid>

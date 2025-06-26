@@ -2,14 +2,26 @@ import { Avatar, Flex, Text } from "@mantine/core";
 
 import classes from "./classes/Header.module.css";
 import Navigation from "./components/Navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence } from "motion/react";
 
 import InfoMenu from "./components/InfoMenu";
+import axios from "axios";
+import { UserProfile } from "../../interfaces/UserProfile";
+import { API } from "../../app/helpers";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Header() {
   const [visibleInfo, setVisibleInfo] = useState(false);
+  const [data, setData] = useState<UserProfile>();
+  const { user } = useAuthStore();
 
+  useEffect(() => {
+    axios.get(`${API}/profiles/${user?.id}`).then((res) => {
+      const userData = res.data;
+      setData(userData);
+    });
+  }, [user?.id]);
   return (
     <>
       <Flex
@@ -36,7 +48,8 @@ export default function Header() {
           onClick={() => setVisibleInfo(true)}
         >
           <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
-            A
+            {data?.firstName[0]}
+            {data?.lastName[0]}
           </Avatar>
         </Flex>
       </Flex>

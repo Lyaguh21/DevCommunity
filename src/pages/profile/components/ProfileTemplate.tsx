@@ -40,7 +40,8 @@ export default function ProfileTemplate({
             w={60}
           >
             <Text fz={24} fw={700}>
-              {/* {ThisUser.nickname[0]} */}d
+              {ThisUser.firstName[0]}
+              {ThisUser.lastName[0]}
             </Text>
           </Avatar>
           <Flex direction="column" gap={4}>
@@ -48,7 +49,7 @@ export default function ProfileTemplate({
               {ThisUser.firstName} {ThisUser.lastName}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
-              {/* @{ThisUser.nickname} */}d
+              @{ThisUser.nickname}
             </Text>
             <Flex align="center">
               <Flex visibleFrom="xs" justify="center" align="center">

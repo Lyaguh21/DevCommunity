@@ -54,7 +54,8 @@ export default function InfoMenu({ setVisibleInfo }) {
           <Flex align="center" justify="space-between" py={5} px={10}>
             <Flex align="center" gap={10}>
               <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
-                {user?.nickname[0]}
+                {data?.firstName[0]}
+                {data?.lastName[0]}
               </Avatar>
               <Text fw={500}>
                 {data?.firstName} {data?.lastName}

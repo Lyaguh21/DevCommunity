@@ -24,14 +24,15 @@ export default function ProfilePortfolioSection({
       <Flex align="center" justify="space-between">
         <Flex align="center" gap={8}>
           <Avatar
-            // src={user.avatar}
-            // alt={user.nickname}
+            src={user?.avatar}
+            alt={user?.nickname}
             color="#4f46e5"
             h={60}
             w={60}
           >
             <Text fz={24} fw={700}>
-              {/* {user.nickname[0]} */}d
+              {user?.firstName[0]}
+              {user?.lastName[0]}
             </Text>
           </Avatar>
           <Flex direction="column" gap={4}>
@@ -39,7 +40,7 @@ export default function ProfilePortfolioSection({
               {user?.firstName} {user?.lastName}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
-              {/* @{user.nickname} */}d
+              @{user?.nickname}
             </Text>
             <Flex align="center">
               <IconCode size={16} color="#6B7280" />
