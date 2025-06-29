@@ -16,7 +16,7 @@ export default function Portfolio() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API}/profiles/${id}`)
+      .get(`${API}/users/${id}`)
       .then((res) => {
         setThisUser(res.data);
       })

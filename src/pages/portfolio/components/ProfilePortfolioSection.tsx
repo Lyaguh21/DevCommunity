@@ -17,7 +17,7 @@ export default function ProfilePortfolioSection({
       className={classes.shadow}
       p={24}
       pt={20}
-      h={220}
+      h={240}
       miw={400}
       w={{ base: "100%", lg: "327px" }}
     >
@@ -36,7 +36,7 @@ export default function ProfilePortfolioSection({
             </Text>
           </Avatar>
           <Flex direction="column" gap={4}>
-            <Text lh="20px" fz={24} fw={700}>
+            <Text fz={24} fw={700}>
               {user?.firstName} {user?.lastName}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">
@@ -52,14 +52,18 @@ export default function ProfilePortfolioSection({
               </Text>
             </Flex>
 
-            <Flex align="center">
-              <IconBuilding size={16} color="#6B7280" />
-              <Text c="#6B7280" fz={16} lh="20px" component="div">
-                Компания:{" "}
-                <Text span c="black">
-                  {user?.workplace}
-                </Text>
-              </Text>
+            <Flex align="center" h={20}>
+              {user?.workplace && (
+                <>
+                  <IconBuilding size={16} color="#6B7280" />
+                  <Text c="#6B7280" fz={16} lh="20px" component="div">
+                    Компания:{" "}
+                    <Text span c="black">
+                      {user?.workplace}
+                    </Text>
+                  </Text>
+                </>
+              )}
             </Flex>
           </Flex>
         </Flex>

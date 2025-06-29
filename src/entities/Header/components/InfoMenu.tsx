@@ -18,7 +18,7 @@ export default function InfoMenu({ setVisibleInfo }) {
 
   const menuRef = useClickOutside(() => setVisibleInfo(false));
   useEffect(() => {
-    axios.get(`${API}/profiles/${user?.id}`).then((res) => {
+    axios.get(`${API}/users/${user?.id}`).then((res) => {
       const userData = res.data;
       setData(userData);
     });

@@ -45,7 +45,7 @@ export default function ProfileTemplate({
             </Text>
           </Avatar>
           <Flex direction="column" gap={4}>
-            <Text lh="20px" fz={24} fw={700}>
+            <Text fz={24} fw={700}>
               {ThisUser.firstName} {ThisUser.lastName}
             </Text>
             <Text c="#6B7280" fz={16} lh="20px" component="div">

@@ -20,7 +20,7 @@ export default function Profile() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API}/profiles/${id}`)
+      .get(`${API}/users/${id}`)
       .then((res) => {
         setUser(res.data);
       })

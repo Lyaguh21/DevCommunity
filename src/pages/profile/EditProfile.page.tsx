@@ -32,7 +32,7 @@ export default function EditProfile() {
 
   const form = useForm({
     initialValues: {
-      // avatar: "",
+      avatar: "",
       firstName: "",
       lastName: "",
       nickname: "",
@@ -46,14 +46,14 @@ export default function EditProfile() {
     setLoading(true);
 
     axios
-      .get(`${API}/profiles/${user?.id}`)
+      .get(`${API}/users/${user?.id}`)
       .then((res) => {
         const userData = res.data;
         setThisUser(userData);
 
         // Обновляем значения формы
         form.setValues({
-          // avatar: userData.avatar || "",
+          avatar: userData.avatar || "",
           firstName: userData.firstName || "",
           lastName: userData.lastName || "",
           nickname: userData.nickname || "",
@@ -69,7 +69,7 @@ export default function EditProfile() {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .patch(`${API}/profiles/${user?.id}`, {
+      .patch(`${API}/users/${user?.id}`, {
         firstName: form.values.firstName,
         lastName: form.values.lastName,
         description: form.values.description,
@@ -86,6 +86,7 @@ export default function EditProfile() {
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   };
+
   return (
     <Box py={16} mih="94vh" key={ThisUser?.id}>
       <Box bg="white" p={24} className={classes.shadow}>
