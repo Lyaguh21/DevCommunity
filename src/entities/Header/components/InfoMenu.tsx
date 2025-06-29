@@ -53,7 +53,13 @@ export default function InfoMenu({ setVisibleInfo }) {
         <Flex h="100%" direction="column" justify="space-between" py={10}>
           <Flex align="center" justify="space-between" py={5} px={10}>
             <Flex align="center" gap={10}>
-              <Avatar src={null} alt="Anonymous" color="#4f46e5" h={38} w={38}>
+              <Avatar
+                src={`data:image/jpeg;base64,${data?.avatar}`}
+                alt={data?.nickname}
+                color="#4f46e5"
+                h={38}
+                w={38}
+              >
                 {data?.firstName[0]}
                 {data?.lastName[0]}
               </Avatar>

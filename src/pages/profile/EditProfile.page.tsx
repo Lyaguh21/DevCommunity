@@ -70,6 +70,7 @@ export default function EditProfile() {
     setLoading(true);
     axios
       .patch(`${API}/users/${user?.id}`, {
+        avatar: form.values.avatar,
         firstName: form.values.firstName,
         lastName: form.values.lastName,
         description: form.values.description,
@@ -85,6 +86,41 @@ export default function EditProfile() {
       )
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
+  };
+
+  const handleImageUpload = async (file: FileWithPath) => {
+    setLoading(true);
+    try {
+      // Создаем FormData и добавляем файл
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(`${API}/image`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const base64Image = response.data.base64;
+
+      form.setFieldValue("avatar", base64Image);
+
+      notifications.show({
+        title: "Успешно",
+        message: "Изображение загружено!",
+        color: "green",
+      });
+      console.log(base64Image);
+    } catch (error) {
+      notifications.show({
+        title: "Ошибка",
+        message: "Не удалось загрузить изображение",
+        color: "red",
+      });
+      console.error("Upload error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -174,25 +210,33 @@ export default function EditProfile() {
               <Dropzone
                 classNames={{ root: classes.input }}
                 accept={IMAGE_MIME_TYPE}
+                loading={loading}
                 onDrop={(files) => {
-                  setDesktopFile(files[0]),
-                    setDesktopPreview(URL.createObjectURL(files[0]));
+                  setDesktopFile(files[0]);
+                  setDesktopPreview(URL.createObjectURL(files[0]));
+                  handleImageUpload(files[0]);
                 }}
                 h={{ md: "240px", base: "240px" }}
                 maxSize={2 * 1024 * 1024}
                 w="100%"
                 styles={{
-                  root: desktopPreview
-                    ? {
-                        backgroundImage: `url(${desktopPreview})`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "top",
-                        backgroundRepeat: "no-repeat",
-                      }
-                    : { pointerEvents: desktopPreview ? "none" : "auto" },
+                  root: {
+                    backgroundImage: desktopPreview
+                      ? `url(${desktopPreview})`
+                      : ThisUser?.avatar
+                      ? `url(data:image/jpeg;base64,${ThisUser.avatar})`
+                      : undefined,
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor:
+                      !desktopPreview && !ThisUser?.avatar
+                        ? "#f8f9fa"
+                        : undefined,
+                  },
                 }}
               >
-                {!desktopPreview ? (
+                {!desktopPreview && !ThisUser?.avatar && (
                   <Grid>
                     <Grid.Col h={80}>
                       <Text ta={"center"} fz={18} c="#b5b6bd">
@@ -206,7 +250,9 @@ export default function EditProfile() {
                       </Text>
                     </Grid.Col>
                   </Grid>
-                ) : (
+                )}
+
+                {desktopPreview && (
                   <Box
                     style={{
                       position: "absolute",
@@ -235,6 +281,7 @@ export default function EditProfile() {
                           e.stopPropagation();
                           setDesktopPreview(null);
                           setDesktopFile(null);
+                          form.setFieldValue("avatar", "");
                         }}
                       >
                         <IconX size={20} color="black" />

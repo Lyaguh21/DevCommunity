@@ -24,7 +24,7 @@ export default function ProfilePortfolioSection({
       <Flex align="center" justify="space-between">
         <Flex align="center" gap={8}>
           <Avatar
-            src={user?.avatar}
+            src={`data:image/jpeg;base64,${user?.avatar}`}
             alt={user?.nickname}
             color="#4f46e5"
             h={60}

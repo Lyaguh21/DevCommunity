@@ -33,8 +33,8 @@ export default function ProfileTemplate({
       <Flex align="center" justify="space-between">
         <Flex align="center" gap={8}>
           <Avatar
-            src={ThisUser.avatar}
-            alt={ThisUser.nickname}
+            src={`data:image/jpeg;base64,${ThisUser?.avatar}`}
+            alt={ThisUser?.nickname}
             color="#4f46e5"
             h={60}
             w={60}
