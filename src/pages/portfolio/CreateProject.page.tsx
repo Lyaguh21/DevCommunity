@@ -98,10 +98,49 @@ export default function CreateProject() {
         ],
         previewImage: desktopFile,
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        notifications.show({
+          title: "Успешно",
+          message: "Проект создан!",
+          color: "green",
+        });
       })
       .finally(() => setLoading(false));
+  };
+
+  const handleImageUpload = async (file: FileWithPath) => {
+    setLoading(true);
+    try {
+      // Создаем FormData и добавляем файл
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(`${API}/image`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const base64Image = response.data.base64;
+
+      form.setFieldValue("previewImage", base64Image);
+
+      notifications.show({
+        title: "Успешно",
+        message: "Изображение загружено!",
+        color: "green",
+      });
+      // console.log(base64Image);
+    } catch (error) {
+      notifications.show({
+        title: "Ошибка",
+        message: "Не удалось загрузить изображение",
+        color: "red",
+      });
+      console.error("Upload error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -182,8 +221,9 @@ export default function CreateProject() {
                 classNames={{ root: classes.input }}
                 accept={IMAGE_MIME_TYPE}
                 onDrop={(files) => {
-                  setDesktopFile(files[0]),
-                    setDesktopPreview(URL.createObjectURL(files[0]));
+                  setDesktopFile(files[0]);
+                  setDesktopPreview(URL.createObjectURL(files[0]));
+                  handleImageUpload(files[0]);
                 }}
                 h={240}
                 w="100%"
@@ -241,6 +281,7 @@ export default function CreateProject() {
                           e.stopPropagation();
                           setDesktopPreview(null);
                           setDesktopFile(null);
+                          form.setFieldValue("previewImage", "");
                         }}
                       >
                         <IconX size={20} color="black" />

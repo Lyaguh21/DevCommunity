@@ -20,10 +20,10 @@ export default function ProfileTemplate({
       miw={335}
     >
       <Image
-        src={project.previewImage}
+        src={`data:image/jpeg;base64,${project?.previewImage}`}
         w="100%"
         h={200}
-        fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+        fallbackSrc={`https://placehold.co/600x400?text=${project.title}`}
       />
       <Flex direction="column" gap={4} p={20}>
         <Text fz={16} fw={700}>
