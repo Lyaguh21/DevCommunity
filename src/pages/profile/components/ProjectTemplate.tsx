@@ -4,6 +4,7 @@ import classes from "../classes/profile.module.css";
 import { BrandFigma, BrandGithub, Link } from "tabler-icons-react";
 import { NavLink, useNavigate } from "react-router";
 import { UserProfile } from "../../../interfaces/UserProfile";
+import Markdown from "react-markdown";
 export default function ProfileTemplate({
   project,
   user,
@@ -20,7 +21,11 @@ export default function ProfileTemplate({
       miw={335}
     >
       <Image
-        src={`data:image/jpeg;base64,${project?.previewImage}`}
+        src={
+          project?.previewImage
+            ? `data:image/jpeg;base64,${project?.previewImage}`
+            : undefined
+        }
         w="100%"
         h={200}
         fallbackSrc={`https://placehold.co/600x400?text=${project.title}`}

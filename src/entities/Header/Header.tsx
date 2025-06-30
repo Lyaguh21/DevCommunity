@@ -48,7 +48,11 @@ export default function Header() {
           onClick={() => setVisibleInfo(true)}
         >
           <Avatar
-            src={`data:image/jpeg;base64,${data?.avatar}`}
+            src={
+              data?.avatar
+                ? `data:image/jpeg;base64,${data?.avatar}`
+                : undefined
+            }
             alt={data?.nickname}
             color="#4f46e5"
             h={38}

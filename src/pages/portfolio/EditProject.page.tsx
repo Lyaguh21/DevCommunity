@@ -1,44 +1,77 @@
 import {
+  ActionIcon,
   Box,
   Button,
+  Center,
   Flex,
-  Input,
-  Textarea,
-  Text,
-  Select,
   Grid,
-  ActionIcon,
+  Input,
   LoadingOverlay,
+  Text,
+  Textarea,
 } from "@mantine/core";
-import { UserProfile } from "../../interfaces/UserProfile";
-import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import classes from "./classes/profile.module.css";
-import { Roles } from "../../interfaces/Role";
-import { useEffect, useState } from "react";
+import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
-import { NavLink } from "react-router";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation, useParams } from "react-router";
+import classes from "./classes/portfolio.module.css";
+import { notifications } from "@mantine/notifications";
 import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 import { API } from "../../app/helpers";
-import { notifications } from "@mantine/notifications";
+import { Project } from "../../interfaces/Project.interface";
 
-export default function EditProfile() {
-  const [ThisUser, setThisUser] = useState<UserProfile>();
+export default function EditProject() {
+  const [project, setProject] = useState<Project>();
   const { user } = useAuthStore();
+  const { id } = useParams();
+  const { state } = useLocation();
+  const author = state.author;
+
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
-      avatar: "",
-      firstName: "",
-      lastName: "",
-      nickname: "",
-      role: "",
-      description: "",
-      workplace: "",
+      title: "",
+      content: "",
+      gitHubLink: "",
+      demoLink: "",
+      designLink: "",
+      previewImage: "",
+    },
+    validate: {
+      title: (value) =>
+        value.trim().length < 3 ? "Название слишком короткое" : null,
+
+      gitHubLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
+
+      demoLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
+
+      designLink: (value) => {
+        if (value && value.trim() !== "") {
+          return !/^https?:\/\//i.test(value.trim())
+            ? "Ссылка должна начинаться с http:// или https://"
+            : null;
+        }
+        return null;
+      },
     },
   });
 
@@ -46,48 +79,62 @@ export default function EditProfile() {
     setLoading(true);
 
     axios
-      .get(`${API}/users/${user?.id}`)
+      .get(`${API}/users/${author.userId}/portfolio/${id}`)
       .then((res) => {
         const userData = res.data;
-        setThisUser(userData);
+        setProject(userData);
 
         // Обновляем значения формы
         form.setValues({
-          avatar: userData.avatar || "",
-          firstName: userData.firstName || "",
-          lastName: userData.lastName || "",
-          nickname: userData.nickname || "",
-          role: userData.role || "",
-          description: userData.description || "",
-          workplace: userData.workplace || "",
+          title: userData.title || "",
+          content: userData.description || "",
+          gitHubLink: userData.links[0] || "",
+          demoLink: userData.links[1] || "",
+          designLink: userData.links[2] || "",
+          previewImage: userData.previewImage || "",
         });
+        console.log(author);
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-  }, [user?.id]);
+  }, [id, author.userId]);
+
+  const handleError = (errors: typeof form.errors) => {
+    // Показываем уведомление для первой ошибки
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      notifications.show({
+        title: "Ошибка",
+        message: firstError,
+        color: "red",
+      });
+    }
+  };
 
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .patch(`${API}/users/${user?.id}`, {
-        avatar: form.values.avatar,
-        firstName: form.values.firstName,
-        lastName: form.values.lastName,
-        description: form.values.description,
-        workplace: form.values.workplace,
-        role: form.values.role,
+      .patch(`${API}/users/${author.userId}/portfolio/${id}`, {
+        title: form.values.title,
+        description: form.values.content,
+        links: [
+          form.values.gitHubLink === "" ? null : form.values.gitHubLink,
+          form.values.demoLink === "" ? null : form.values.demoLink,
+          form.values.designLink === "" ? null : form.values.designLink,
+        ],
+        previewImage: form.values.previewImage,
       })
       .then(() =>
         notifications.show({
           title: "Успешно",
-          message: "Профиль обновлен!",
+          message: "Проект обновлен!",
           color: "green",
         })
       )
       .catch(() =>
         notifications.show({
           title: "Ошибка",
-          message: "Не удалось изменить профиль",
+          message: "Не удалось изменить проект",
           color: "red",
         })
       )
@@ -109,14 +156,13 @@ export default function EditProfile() {
 
       const base64Image = response.data.base64;
 
-      form.setFieldValue("avatar", base64Image);
-
+      form.setFieldValue("previewImage", base64Image);
+      console.log(form.values);
       notifications.show({
         title: "Успешно",
         message: "Изображение загружено!",
         color: "green",
       });
-      console.log(base64Image);
     } catch (error) {
       notifications.show({
         title: "Ошибка",
@@ -129,89 +175,83 @@ export default function EditProfile() {
     }
   };
 
+  if (user?.id !== author?.userId) {
+    return <Center>У вас нет доступа к редактированию этого проекта</Center>;
+  }
+
   return (
-    <Box py={16} mih="94vh" key={ThisUser?.id}>
+    <Box py={16} mih="94vh">
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
+      />
       <Box bg="white" p={24} className={classes.shadow}>
-        <LoadingOverlay
-          visible={loading}
-          zIndex={1000}
-          overlayProps={{ radius: "sm", blur: 1 }}
-        />
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
-          Редактирование профиля
+          Редактирование проекта
         </Text>
         <form>
           <Flex gap={16} mb={16} wrap={{ base: "wrap", md: "nowrap" }}>
             <Flex gap={16} direction="column" w={{ md: "385px", base: "100%" }}>
-              <Input.Wrapper label="Имя" classNames={{ label: classes.label }}>
+              <Input.Wrapper
+                label="Название"
+                classNames={{ label: classes.label }}
+                withAsterisk
+              >
                 <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите ваше имя"
+                  placeholder="Введите название проекта"
                   size="lg"
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
-                  {...form.getInputProps("firstName")}
+                  {...form.getInputProps("title")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Фамилия"
+                label="Github "
                 classNames={{ label: classes.label }}
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите вашу фамилию"
+                  placeholder="Введите ссылку на Github"
                   size="lg"
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
-                  {...form.getInputProps("lastName")}
+                  {...form.getInputProps("gitHubLink")}
+                />
+              </Input.Wrapper>
+              <Input.Wrapper label="Демо" classNames={{ label: classes.label }}>
+                <Input
+                  w={{ md: "385px", base: "100%" }}
+                  placeholder="Введите ссылку на демо проекта"
+                  size="lg"
+                  c="#4f46e5"
+                  radius="6px"
+                  maxLength={100}
+                  {...form.getInputProps("demoLink")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Никнейм"
+                label="Дизайн"
                 classNames={{ label: classes.label }}
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите ваш никнейм"
+                  placeholder="Введите ссылку на дизайн проекта"
                   size="lg"
                   c="#4f46e5"
                   radius="6px"
                   maxLength={100}
-                  disabled
-                  {...form.getInputProps("nickname")}
-                />
-              </Input.Wrapper>
-              <Input.Wrapper label="Роль" classNames={{ label: classes.label }}>
-                <Select
-                  w={{ md: "385px", base: "100%" }}
-                  data={Roles}
-                  placeholder="Выберите вашу роль"
-                  size="lg"
-                  {...form.getInputProps("role")}
-                />
-              </Input.Wrapper>
-
-              <Input.Wrapper
-                label="Место работы"
-                classNames={{ label: classes.label }}
-              >
-                <Input
-                  w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите место работы"
-                  size="lg"
-                  c="#4f46e5"
-                  radius="6px"
-                  maxLength={100}
-                  {...form.getInputProps("workplace")}
+                  {...form.getInputProps("designLink")}
                 />
               </Input.Wrapper>
             </Flex>
 
             <Flex direction="column" w="100%">
               <Text fz={18} fw={500}>
-                Аватарка
+                Изображение
               </Text>
               <Dropzone
                 classNames={{ root: classes.input }}
@@ -229,20 +269,20 @@ export default function EditProfile() {
                   root: {
                     backgroundImage: desktopPreview
                       ? `url(${desktopPreview})`
-                      : ThisUser?.avatar
-                      ? `url(data:image/jpeg;base64,${ThisUser.avatar})`
+                      : project?.previewImage
+                      ? `url(data:image/jpeg;base64,${project?.previewImage})`
                       : undefined,
                     backgroundSize: "contain",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     backgroundColor:
-                      !desktopPreview && !ThisUser?.avatar
+                      !desktopPreview && !project?.previewImage
                         ? "#f8f9fa"
                         : undefined,
                   },
                 }}
               >
-                {!desktopPreview && !ThisUser?.avatar && (
+                {!desktopPreview && !project?.previewImage && (
                   <Grid>
                     <Grid.Col h={80}>
                       <Text ta={"center"} fz={18} c="#b5b6bd">
@@ -306,21 +346,20 @@ export default function EditProfile() {
               </Dropzone>
               <Textarea
                 rows={8}
-                label="О себе"
+                label="Текст"
                 size="lg"
-                maxLength={350}
-                placeholder="Напишите информацию о себе"
-                {...form.getInputProps("description")}
+                placeholder="Напишите текст к своему проекту"
+                {...form.getInputProps("content")}
               />
             </Flex>
           </Flex>
 
           <Flex justify="flex-end" mt={24} gap={16}>
-            <NavLink to={`/profile/${ThisUser?.userId}`}>
+            <NavLink to={`/portfolio/${author?.userId}`}>
               <Button
                 h={50}
                 fz={18}
-                w={180}
+                w={150}
                 radius="6px"
                 variant="outline"
                 color="#000"
@@ -331,10 +370,10 @@ export default function EditProfile() {
             <Button
               h={50}
               fz={18}
-              w={180}
+              w={150}
               bg="#4f46e5"
               radius="6px"
-              onClick={() => form.onSubmit(handleSubmit)()}
+              onClick={() => form.onSubmit(handleSubmit, handleError)()}
             >
               Редактировать
             </Button>

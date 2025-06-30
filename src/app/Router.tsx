@@ -15,6 +15,7 @@ import RequireAuth from "./RequireAuth";
 import CreateProject from "../pages/portfolio/CreateProject.page";
 import Error404 from "../pages/Errors/Error404.page";
 import ErrorNotFound from "../pages/Errors/ErrorNotFound";
+import EditProject from "../pages/portfolio/EditProject.page";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
           {
             path: "/portfolio/createProject",
             element: <CreateProject />,
+          },
+          {
+            path: "/portfolio/EditProject/:id",
+            element: <EditProject />,
           },
         ],
       },

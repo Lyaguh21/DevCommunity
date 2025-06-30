@@ -1,6 +1,6 @@
 import { NavLink, useParams } from "react-router";
 import { UserProfile } from "../../interfaces/UserProfile";
-import { Box, Flex, SimpleGrid, Text } from "@mantine/core";
+import { Box, Flex, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 
 import ProfilePortfolioSection from "./components/ProfilePortfolioSection";
 import ProjectTemplate from "../profile/components/ProjectTemplate";
@@ -28,8 +28,19 @@ export default function Portfolio() {
 
   return (
     <Box h="100%" mih="94vh" py={16}>
-      <Flex w="100%" gap={16} wrap={{ base: "wrap", lg: "nowrap" }}>
-        <ProfilePortfolioSection user={ThisUser} />
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
+      />
+      <Flex
+        w="100%"
+        gap={16}
+        align="flex-start"
+        wrap={{ base: "wrap", lg: "nowrap" }}
+      >
+        <ProfilePortfolioSection ThisUser={ThisUser} />
+
         <Box
           bg="white"
           className={classes.shadow}

@@ -96,7 +96,7 @@ export default function CreateProject() {
           form.values.demoLink === "" ? null : form.values.demoLink,
           form.values.designLink === "" ? null : form.values.designLink,
         ],
-        previewImage: desktopFile,
+        previewImage: form.values.previewImage,
       })
       .then(() => {
         notifications.show({
@@ -124,13 +124,12 @@ export default function CreateProject() {
       const base64Image = response.data.base64;
 
       form.setFieldValue("previewImage", base64Image);
-
+      console.log(form.values);
       notifications.show({
         title: "Успешно",
         message: "Изображение загружено!",
         color: "green",
       });
-      // console.log(base64Image);
     } catch (error) {
       notifications.show({
         title: "Ошибка",
@@ -302,16 +301,7 @@ export default function CreateProject() {
                 rows={8}
                 label="Текст"
                 size="lg"
-                placeholder="Напишите текст к своему посту в формате Markdown
-  
-  Пример:
-  # Заголовок
-  ## Подзаголовок
-  **Жирный текст**
-  [Ссылка](https://example.com)
-  *Курсив*
-  `код`
-  > Цитата"
+                placeholder="Напишите текст к своему проекту"
                 {...form.getInputProps("content")}
               />
             </Flex>
