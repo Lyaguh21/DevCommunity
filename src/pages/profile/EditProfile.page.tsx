@@ -46,7 +46,9 @@ export default function EditProfile() {
     setLoading(true);
 
     axios
-      .get(`${API}/users/${user?.id}`)
+      .get(`${API}/users/${user?.id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         const userData = res.data;
         setThisUser(userData);
@@ -66,17 +68,59 @@ export default function EditProfile() {
       .finally(() => setLoading(false));
   }, [user?.id]);
 
+  // const handleSubmit = async (values: typeof form.values) => {
+  //   setLoading(true);
+  //   axios
+  //     .patch(
+  //       `${API}/users/${user?.id}`,
+  //       {
+  //         avatar: form.values.avatar,
+  //         firstName: form.values.firstName,
+  //         lastName: form.values.lastName,
+  //         description: form.values.description,
+  //         workplace: form.values.workplace,
+  //         role: form.values.role,
+  //       },
+  //       {
+  //         withCredentials: true, // Отправляем куки (JWT)
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // Уберите заголовок Authorization, если он был
+  //           // (теперь токен передается через куки)
+  //         },
+  //       }
+  //     )
+  //     .then(() =>
+  //       notifications.show({
+  //         title: "Успешно",
+  //         message: "Профиль обновлен!",
+  //         color: "green",
+  //       })
+  //     )
+  //     .catch(() =>
+  //       notifications.show({
+  //         title: "Ошибка",
+  //         message: "Не удалось изменить профиль",
+  //         color: "red",
+  //       })
+  //     )
+  //     .finally(() => setLoading(false));
+  // };
+
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
+
+    // Проверка наличия кук
+    console.log("Текущие куки:", document.cookie);
+
     axios
-      .patch(`${API}/users/${user?.id}`, {
-        avatar: form.values.avatar,
-        firstName: form.values.firstName,
-        lastName: form.values.lastName,
-        description: form.values.description,
-        workplace: form.values.workplace,
-        role: form.values.role,
-      })
+      .patch(
+        `${API}/users/${user?.id}`,
+        { ...values },
+        {
+          withCredentials: true,
+        }
+      )
       .then(() =>
         notifications.show({
           title: "Успешно",
@@ -84,13 +128,12 @@ export default function EditProfile() {
           color: "green",
         })
       )
-      .catch(() =>
-        notifications.show({
-          title: "Ошибка",
-          message: "Не удалось изменить профиль",
-          color: "red",
-        })
-      )
+      .catch((error) => {
+        console.error("Ошибка запроса:", error);
+        if (error.response?.status === 401) {
+          console.log("Куки не отправились или устарели!");
+        }
+      })
       .finally(() => setLoading(false));
   };
 

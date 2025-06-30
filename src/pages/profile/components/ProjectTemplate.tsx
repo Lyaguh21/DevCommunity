@@ -4,7 +4,7 @@ import classes from "../classes/profile.module.css";
 import { BrandFigma, BrandGithub, Link } from "tabler-icons-react";
 import { NavLink, useNavigate } from "react-router";
 import { UserProfile } from "../../../interfaces/UserProfile";
-import Markdown from "react-markdown";
+
 export default function ProfileTemplate({
   project,
   user,

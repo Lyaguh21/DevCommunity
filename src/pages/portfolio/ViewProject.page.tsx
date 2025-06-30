@@ -31,7 +31,9 @@ export default function ViewProject() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API}/users/${author.id}/portfolio/${id}`)
+      .get(`${API}/users/${author.id}/portfolio/${id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setProject(res.data);
       })
@@ -43,7 +45,9 @@ export default function ViewProject() {
 
   const handleDelete = () => {
     axios
-      .delete(`${API}/users/${author.id}/portfolio/${id}`)
+      .delete(`${API}/users/${author.id}/portfolio/${id}`, {
+        withCredentials: true,
+      })
       .then(() => {
         notifications.show({
           title: "Успешно",
