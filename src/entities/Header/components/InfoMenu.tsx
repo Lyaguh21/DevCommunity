@@ -24,17 +24,9 @@ export default function InfoMenu({ setVisibleInfo }) {
     });
   }, [user?.id]);
 
-  const onExit = () => {
-    clearUser();
-    axios.post(`${API}/auth/logout`, {
-      withCredentials: true,
-    });
-    close();
-  };
-
   return (
     <>
-      <ModalExit close={close} opened={opened} onExit={onExit} />
+      <ModalExit close={close} opened={opened} />
       <motion.div
         ref={menuRef}
         initial={{ x: 300, opacity: 0 }}

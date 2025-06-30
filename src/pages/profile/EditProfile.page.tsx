@@ -17,7 +17,7 @@ import classes from "./classes/profile.module.css";
 import { Roles } from "../../interfaces/Role";
 import { useEffect, useState } from "react";
 import { IconX } from "@tabler/icons-react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 import { API } from "../../app/helpers";
@@ -29,6 +29,7 @@ export default function EditProfile() {
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigator = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -86,13 +87,15 @@ export default function EditProfile() {
           },
         }
       )
-      .then(() =>
+      .then(() => {
         notifications.show({
           title: "Успешно",
           message: "Профиль обновлен!",
           color: "green",
-        })
-      )
+        }),
+          navigator(`/profile/${ThisUser?.userId}`);
+      })
+
       .catch(() =>
         notifications.show({
           title: "Ошибка",
@@ -103,40 +106,9 @@ export default function EditProfile() {
       .finally(() => setLoading(false));
   };
 
-  // const handleSubmit = async (values: typeof form.values) => {
-  //   setLoading(true);
-
-  //   // Проверка наличия кук
-  //   console.log("Текущие куки:", document.cookie);
-
-  //   axios
-  //     .patch(
-  //       `${API}/users/${user?.id}`,
-  //       { ...values },
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     )
-  //     .then(() =>
-  //       notifications.show({
-  //         title: "Успешно",
-  //         message: "Профиль обновлен!",
-  //         color: "green",
-  //       })
-  //     )
-  //     .catch((error) => {
-  //       console.error("Ошибка запроса:", error);
-  //       if (error.response?.status === 401) {
-  //         console.log("Куки не отправились или устарели!");
-  //       }
-  //     })
-  //     .finally(() => setLoading(false));
-  // };
-
   const handleImageUpload = async (file: FileWithPath) => {
     setLoading(true);
     try {
-      // Создаем FormData и добавляем файл
       const formData = new FormData();
       formData.append("image", file);
 

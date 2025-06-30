@@ -1,16 +1,26 @@
 import { Button, Flex, Modal, Text } from "@mantine/core";
 import { IconCancel } from "@tabler/icons-react";
 import { Logout } from "tabler-icons-react";
+import { useAuthStore } from "../../stores/authStore";
+import axios from "axios";
+import { API } from "../../app/helpers";
 
 export default function ModalExit({
   opened,
   close,
-  onExit,
 }: {
-  onExit: () => void;
   opened: boolean;
   close: () => void;
 }) {
+  const { clearUser } = useAuthStore();
+
+  const onExit = () => {
+    clearUser();
+    axios.post(`${API}/auth/logout`, {
+      withCredentials: true,
+    });
+    close();
+  };
   return (
     <Modal opened={opened} onClose={close} title="Вы уверены что хотите выйти?">
       <Flex gap={16}>

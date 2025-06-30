@@ -14,7 +14,7 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useParams } from "react-router";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router";
 import classes from "./classes/portfolio.module.css";
 import { notifications } from "@mantine/notifications";
 import { useAuthStore } from "../../stores/authStore";
@@ -32,6 +32,7 @@ export default function EditProject() {
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -146,7 +147,10 @@ export default function EditProject() {
           color: "red",
         })
       )
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        navigate(`/portfolio/${author?.userId}`);
+      });
   };
 
   const handleImageUpload = async (file: FileWithPath) => {

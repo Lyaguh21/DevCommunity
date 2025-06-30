@@ -32,11 +32,6 @@ export default function Profile() {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-  const onExit = () => {
-    clearUser();
-    close();
-  };
-
   if (loading) {
     return (
       <Center style={{ height: "100vh" }}>
@@ -50,7 +45,7 @@ export default function Profile() {
       <ProfileTemplate ThisUser={user} openModal={open} />
       <PortfolioSection ThisUser={user} thisAuthor={id} />
 
-      <ModalExit close={close} opened={opened} onExit={onExit} />
+      <ModalExit close={close} opened={opened} />
     </Flex>
   );
 }

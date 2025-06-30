@@ -13,7 +13,7 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import classes from "./classes/portfolio.module.css";
 import { notifications } from "@mantine/notifications";
 import { useAuthStore } from "../../stores/authStore";
@@ -25,6 +25,7 @@ export default function CreateProject() {
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
   const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -111,7 +112,10 @@ export default function CreateProject() {
           color: "green",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        navigate(`/portfolio/${user?.id}`);
+      });
   };
 
   const handleImageUpload = async (file: FileWithPath) => {
@@ -122,6 +126,8 @@ export default function CreateProject() {
       formData.append("image", file);
 
       const response = await axios.post(`${API}/image`, formData, {
+        withCredentials: true,
+
         headers: {
           "Content-Type": "multipart/form-data",
         },
