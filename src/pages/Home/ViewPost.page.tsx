@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate, useParams } from "react-router";
 import { Avatar, Box, Flex, Image, Text } from "@mantine/core";
 import { ArrowLeft, Heart, Point } from "tabler-icons-react";
 import classes from "./classes/Home.module.css";
@@ -8,38 +8,68 @@ import TypeAndDirection from "./components/TypeAndDirection";
 import { IconEdit, IconShare3, IconTrash } from "@tabler/icons-react";
 import { Post } from "../../interfaces/Post.interface";
 import ReactMarkdown from "react-markdown";
+import axios from "axios";
+import { UserProfile } from "../../interfaces/UserProfile";
+import { API } from "../../app/helpers";
+import { notifications } from "@mantine/notifications";
+import ModalConfirmDelete from "../../entities/ModalConfilrmDelete/ModalConfirmDelete";
+import { useDisclosure } from "@mantine/hooks";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function ViewPost() {
   const { id } = useParams();
-  const [post, setPost] = useState<Post>({
-    id: "1",
-    title: "Test",
-    content:
-      "# React Hooks Tips\n\n- **useState**: Split state logically\n- **useEffect**: Cleanup subscriptions\n- **useMemo**: Optimize calculations\n- **Custom Hooks**: Reuse logic (`useFetch`, `useLocalStorage`)\n\n> Pro tip: Follow Rules of Hooks!",
-    author: "223",
-    type: "Content",
-    direction: "Frontend",
-    likes: 0,
-    isLikedByUser: false,
-    previewImage:
-      "https://avatars.mds.yandex.net/get-mpic/12476287/2a0000018da9d80e0e03876d95283b129253/orig",
-  });
+  const [author, setAuthor] = useState<UserProfile>();
+  const [post, setPost] = useState<Post>({});
+  const [loading, setLoading] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
-  //по id автора из post получаю автора
-  const author = {
-    id: "3",
-    firstName: "Иdгорь",
-    lastName: "Малышев",
-    nickname: "Lgorek2280",
-    role: "Frontend",
-    description:
-      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-    workplace: 'OOO "ZUZU"',
-    portfolio: [],
-  };
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${API}/posts/${id}`, {
+        withCredentials: true,
+      })
+      .then((res) => setPost(res.data));
+  }, [post]);
+
+  useEffect(() => {
+    axios
+      .get(`${API}/users/${post.author}`, {
+        withCredentials: true,
+      })
+      .then((res) => setAuthor(res.data));
+  }, [author]);
 
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLikedByUser);
+
+  const handleDelete = () => {
+    axios
+      .delete(`${API}/posts/${id}`, {
+        withCredentials: true,
+      })
+      .then(() => {
+        notifications.show({
+          title: "Успешно",
+          message: "Пост удален!",
+          color: "green",
+        });
+      })
+      .catch(() =>
+        notifications.show({
+          title: "Ошибка",
+          message: "Не удалось удалить пост",
+          color: "red",
+        })
+      )
+      .finally(() => {
+        close();
+        navigate("/");
+      });
+  };
+
   const handleLike = async () => {
     try {
       const newLikeStatus = !isLiked;
@@ -83,33 +113,43 @@ export default function ViewPost() {
 
   return (
     <Box pt={16} mih="94vh">
+      <ModalConfirmDelete
+        close={close}
+        opened={opened}
+        onDelete={handleDelete}
+      />
       <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>
             <Avatar
-              src={author.avatar}
-              alt={author.nickname}
+              src={
+                author?.avatar
+                  ? `data:image/jpeg;base64,${author?.avatar}`
+                  : undefined
+              }
+              alt={author?.nickname}
               color="#4f46e5"
               h={40}
               w={40}
             >
-              {author.nickname[0]}
+              {author?.firstName[0]}
+              {author?.lastName[0]}
             </Avatar>
             <Box>
               <Text lh="20px" fz={16} fw={600}>
-                {author.firstName} {author.lastName}
+                {author?.firstName} {author?.lastName}
               </Text>
               <Text c="#6B7280" fz={14} lh="20px" component="div" fw={600}>
                 <Flex align="center">
                   <NavLink
-                    to={`/profile/${author.id}`}
+                    to={`/profile/${author?.userId}`}
                     style={{ textDecoration: "none" }}
                     color="#4f46e5"
                   >
-                    @{author.nickname}
+                    @{author?.nickname}
                   </NavLink>
                   <Point fill="#6B7280" stroke="#6B7280" size={16} />
-                  {Roles.find((role) => author.role == role.value)?.label}
+                  {Roles.find((role) => author?.role == role.value)?.label}
                 </Flex>
               </Text>
             </Box>
@@ -117,8 +157,16 @@ export default function ViewPost() {
 
           <Flex gap={8} align="center">
             <TypeAndDirection type={post.type} direction={post.direction} />
-            <IconEdit size={20} style={{ cursor: "pointer" }} />
-            <IconTrash size={20} style={{ cursor: "pointer" }} />
+            {author?.id === user?.userId && (
+              <>
+                <IconEdit size={20} style={{ cursor: "pointer" }} />
+                <IconTrash
+                  size={20}
+                  style={{ cursor: "pointer" }}
+                  onClick={open}
+                />
+              </>
+            )}
           </Flex>
         </Flex>
 
@@ -128,7 +176,11 @@ export default function ViewPost() {
 
         {post.previewImage && (
           <Image
-            src={post.previewImage}
+            src={
+              post?.previewImage
+                ? `data:image/jpeg;base64,${post.previewImage}`
+                : undefined
+            }
             h={{ base: 190, sm: 300 }}
             w={{ base: "100%", sm: "auto" }}
             mb={16}

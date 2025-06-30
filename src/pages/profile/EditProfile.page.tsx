@@ -25,7 +25,7 @@ import { notifications } from "@mantine/notifications";
 
 export default function EditProfile() {
   const [ThisUser, setThisUser] = useState<UserProfile>();
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
@@ -88,6 +88,11 @@ export default function EditProfile() {
         }
       )
       .then(() => {
+        setUser({
+          id: user?.id,
+          role: form.values.role,
+          nickname: user?.nickname,
+        });
         notifications.show({
           title: "Успешно",
           message: "Профиль обновлен!",

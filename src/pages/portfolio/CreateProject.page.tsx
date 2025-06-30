@@ -184,7 +184,7 @@ export default function CreateProject() {
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Github "
+                label="Github"
                 classNames={{ label: classes.label }}
               >
                 <Input

@@ -101,19 +101,24 @@ export default function Register() {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .post(`${API}/auth/register`, {
-        nickname: form.values.nickname,
-        password: form.values.password,
-        firstName: form.values.firstname,
-        lastName: form.values.lastname,
-        email: form.values.email,
-        role: form.values.role,
-      })
+      .post(
+        `${API}/auth/register`,
+        {
+          nickname: form.values.nickname,
+          password: form.values.password,
+          firstName: form.values.firstname,
+          lastName: form.values.lastname,
+          email: form.values.email,
+          role: form.values.role,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setLoading(true);
         setUser({
           id: res.data.id,
-          token: res.data.JWTtoken,
           role: res.data.role,
           nickname: res.data.nickname,
         });

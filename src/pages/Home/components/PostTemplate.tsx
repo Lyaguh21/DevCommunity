@@ -9,33 +9,33 @@ import {
 } from "@mantine/core";
 import { Post } from "../../../interfaces/Post.interface";
 import { Roles } from "../../../interfaces/Role";
-import { Heart, Point } from "tabler-icons-react";
+import { Heart, Point, User } from "tabler-icons-react";
 import TypeAndDirection from "./TypeAndDirection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { Link, NavLink, useNavigate } from "react-router";
+
+import { NavLink, useNavigate } from "react-router";
 import classes from "../classes/Home.module.css";
-import { useDisclosure } from "@mantine/hooks";
-import ModalConfirmDelete from "../../../entities/ModalConfilrmDelete/ModalConfirmDelete";
+
+import axios from "axios";
+import { API } from "../../../app/helpers";
+import { UserProfile } from "../../../interfaces/UserProfile";
+import { useAuthStore } from "../../../stores/authStore";
 
 export default function PostTemplate({ post }: { post: Post }) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLikedByUser);
+  const [author, setAuthor] = useState<UserProfile>();
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
-  //по id автора из post получаю автора
-  const author = {
-    id: "3",
-    firstName: "Иdгорь",
-    lastName: "Малышев",
-    nickname: "Lgorek2280",
-    role: "Frontend",
-    description:
-      " В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид  В zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид Работаю в zuzu, главный тех лид",
-    workplace: 'OOO "ZUZU"',
-    portfolio: [],
-  };
+  useEffect(() => {
+    axios
+      .get(`${API}/users/${post.author}`, {
+        withCredentials: true,
+      })
+      .then((res) => setAuthor(res.data));
+  }, [post]);
 
   const handleLike = async () => {
     try {
@@ -58,45 +58,40 @@ export default function PostTemplate({ post }: { post: Post }) {
     }
   };
 
-  const [opened, { open, close }] = useDisclosure(false);
-  const handleDelete = () => {
-    console.log(`Delete ${post.id}`);
-  };
-
   return (
     <>
-      <ModalConfirmDelete
-        close={close}
-        opened={opened}
-        onDelete={handleDelete}
-      />
       <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>
             <Avatar
-              src={author.avatar}
-              alt={author.nickname}
+              src={
+                author?.avatar
+                  ? `data:image/jpeg;base64,${author?.avatar}`
+                  : undefined
+              }
+              alt={author?.nickname}
               color="#4f46e5"
               h={40}
               w={40}
             >
-              {author.nickname[0]}
+              {author?.firstName[0]}
+              {author?.lastName[0]}
             </Avatar>
             <Box>
               <Text lh="20px" fz={16} fw={600}>
-                {author.firstName} {author.lastName}
+                {author?.firstName} {author?.lastName}
               </Text>
               <Text c="#6B7280" fz={14} fw={600} lh="20px" component="div">
                 <Flex align="center">
                   <NavLink
-                    to={`/profile/${author.id}`}
+                    to={`/profile/${author?.userId}`}
                     style={{ textDecoration: "none" }}
                     color="#4f46e5"
                   >
-                    @{author.nickname}
+                    @{author?.nickname}
                   </NavLink>
                   <Point fill="#6B7280" stroke="#6B7280" size={16} />
-                  {Roles.find((role) => author.role == role.value)?.label}
+                  {Roles.find((role) => author?.role == role.value)?.label}
                 </Flex>
               </Text>
             </Box>
@@ -104,8 +99,6 @@ export default function PostTemplate({ post }: { post: Post }) {
 
           <Flex gap={8} align="center">
             <TypeAndDirection type={post.type} direction={post.direction} />
-            <IconEdit size={20} style={{ cursor: "pointer" }} />
-            <IconTrash size={20} style={{ cursor: "pointer" }} onClick={open} />
           </Flex>
         </Flex>
 
@@ -115,7 +108,11 @@ export default function PostTemplate({ post }: { post: Post }) {
 
         {post.previewImage && (
           <Image
-            src={post.previewImage}
+            src={
+              post?.previewImage
+                ? `data:image/jpeg;base64,${post.previewImage}`
+                : undefined
+            }
             h={{ base: 190, sm: 300 }}
             w={{ base: "100%", sm: "auto" }}
             mb={16}

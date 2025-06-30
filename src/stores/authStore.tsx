@@ -7,15 +7,9 @@ interface AuthState {
     id: string;
     nickname: string;
     role: string;
-    token: string;
   } | null;
 
-  setUser: (userData: {
-    id: string;
-    nickname: string;
-    role: string;
-    token: string;
-  }) => void;
+  setUser: (userData: { id: string; nickname: string; role: string }) => void;
   clearUser: () => void;
 }
 
@@ -32,14 +26,12 @@ export const useAuthStore = create<AuthState>()(
             id: userData.id,
             nickname: userData.nickname,
             role: userData.role,
-            token: userData.token,
           },
         });
       },
 
       clearUser: () => {
         set({ isAuthenticated: false, user: null });
-        localStorage.removeItem("auth-storage");
       },
     }),
     {

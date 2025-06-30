@@ -10,21 +10,27 @@ import {
   Text,
   Textarea,
 } from "@mantine/core";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 import classes from "./classes/Home.module.css";
-import { TypePost } from "../../interfaces/Type";
+import { TypeNotHRPost, TypePost } from "../../interfaces/Type";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import "@mantine/dropzone/styles.css";
 import { useForm } from "@mantine/form";
 import { Directions } from "../../interfaces/Directions";
+import { useAuthStore } from "../../stores/authStore";
+import { notifications } from "@mantine/notifications";
+import { API } from "../../app/helpers";
+import axios from "axios";
 
 export default function CreatePost() {
   const [desktopPreview, setDesktopPreview] = useState<string | null>(null);
   const [desktopFile, setDesktopFile] = useState<FileWithPath | null>(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -32,24 +38,99 @@ export default function CreatePost() {
       content: "",
       type: "",
       direction: "",
+      previewImage: "",
+    },
+    validate: {
+      title: (value) =>
+        value.trim().length < 3 ? "Название слишком короткое" : null,
+      direction: (value) =>
+        value.length == 0 ? "Выберите направление поста" : null,
+      type: (value) => (value.length == 0 ? "Выберите тип поста" : null),
     },
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    // setLoading(true);
-    // try {
-    //   // Здесь ваш API запрос для регистрации
-    //   console.log("Регистрационные данные:", values);
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   // После успешной регистрации можно перенаправить пользователя
-    //   // navigate('/dashboard');
-    // } catch (error) {
-    //   console.error("Ошибка регистрации:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
+  const handleError = (errors: typeof form.errors) => {
     console.log(form.values);
+    // Показываем уведомление для первой ошибки
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      notifications.show({
+        title: "Ошибка",
+        message: firstError,
+        color: "red",
+      });
+    }
   };
+
+  const handleImageUpload = async (file: FileWithPath) => {
+    setLoading(true);
+    try {
+      // Создаем FormData и добавляем файл
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(`${API}/image`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const base64Image = response.data.base64;
+
+      form.setFieldValue("previewImage", base64Image);
+      console.log(form.values);
+      notifications.show({
+        title: "Успешно",
+        message: "Изображение загружено!",
+        color: "green",
+      });
+    } catch (error) {
+      notifications.show({
+        title: "Ошибка",
+        message: "Не удалось загрузить изображение",
+        color: "red",
+      });
+      console.error("Upload error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const errors = form.validate();
+    if (errors.hasErrors) {
+      handleError(errors.errors);
+      return;
+    }
+    setLoading(true);
+    axios
+      .post(
+        `${API}/posts`,
+        {
+          title: form.values.title,
+          content: form.values.content,
+          previewImage: form.values.previewImage,
+          direction: form.values.direction,
+          type: form.values.type,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then(() => {
+        notifications.show({
+          title: "Успешно",
+          message: "Проект создан!",
+          color: "green",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+        navigate(`/`);
+      });
+  };
+
   return (
     <Box py={16} mih="94vh">
       <Box bg="white" p={24} className={classes.shadow}>
@@ -68,6 +149,7 @@ export default function CreatePost() {
                 label="Название"
                 classNames={{ label: classes.label }}
                 withAsterisk
+                errorProps={{ style: { display: "none" } }}
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
@@ -88,7 +170,9 @@ export default function CreatePost() {
                   data={Directions}
                   w={{ md: "385px", base: "100%" }}
                   placeholder="Введите направление поста"
+                  key={form.key("direction")}
                   size="lg"
+                  errorProps={{ style: { display: "none" } }}
                   {...form.getInputProps("direction")}
                 />
               </Input.Wrapper>
@@ -99,9 +183,11 @@ export default function CreatePost() {
               >
                 <Select
                   w={{ md: "385px", base: "100%" }}
-                  data={TypePost}
+                  data={user?.role == "HR" ? TypePost : TypeNotHRPost}
                   placeholder="Введите тип поста"
+                  key={form.key("type")}
                   size="lg"
+                  errorProps={{ style: { display: "none" } }}
                   {...form.getInputProps("type")}
                 />
               </Input.Wrapper>
@@ -115,10 +201,11 @@ export default function CreatePost() {
                 classNames={{ root: classes.input }}
                 accept={IMAGE_MIME_TYPE}
                 onDrop={(files) => {
-                  setDesktopFile(files[0]),
-                    setDesktopPreview(URL.createObjectURL(files[0]));
+                  setDesktopFile(files[0]);
+                  setDesktopPreview(URL.createObjectURL(files[0]));
+                  handleImageUpload(files[0]);
                 }}
-                h={{ md: "100%", base: "240px" }}
+                h={240}
                 w="100%"
                 styles={{
                   root: desktopPreview
@@ -174,6 +261,7 @@ export default function CreatePost() {
                           e.stopPropagation();
                           setDesktopPreview(null);
                           setDesktopFile(null);
+                          form.setFieldValue("previewImage", "");
                         }}
                       >
                         <IconX size={20} color="black" />
@@ -229,7 +317,7 @@ export default function CreatePost() {
               w={150}
               bg="#4f46e5"
               radius="6px"
-              onClick={() => form.onSubmit(handleSubmit)()}
+              onClick={() => form.onSubmit(handleSubmit, handleError)()}
             >
               Создать
             </Button>
