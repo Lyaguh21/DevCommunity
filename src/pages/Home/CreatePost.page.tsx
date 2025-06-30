@@ -46,6 +46,8 @@ export default function CreatePost() {
       direction: (value) =>
         value.length == 0 ? "Выберите направление поста" : null,
       type: (value) => (value.length == 0 ? "Выберите тип поста" : null),
+      content: (value) =>
+        value.trim().length < 5 ? "Текст поста слишком короткий" : null,
     },
   });
 
@@ -285,6 +287,7 @@ export default function CreatePost() {
             rows={8}
             label="Текст"
             size="lg"
+            errorProps={{ style: { display: "none" } }}
             placeholder="Напишите текст к своему посту в формате Markdown
 
 Пример:

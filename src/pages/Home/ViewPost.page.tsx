@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router";
-import { Avatar, Box, Flex, Image, Text } from "@mantine/core";
+import { Avatar, Box, Flex, Image, LoadingOverlay, Text } from "@mantine/core";
 import { ArrowLeft, Heart, Point } from "tabler-icons-react";
 import classes from "./classes/Home.module.css";
 import { Roles } from "../../interfaces/Role";
@@ -19,6 +19,8 @@ import { useAuthStore } from "../../stores/authStore";
 export default function ViewPost() {
   const { id } = useParams();
   const [author, setAuthor] = useState<UserProfile>();
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
   const [post, setPost] = useState<Post>({});
   const [loading, setLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
@@ -27,23 +29,38 @@ export default function ViewPost() {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`${API}/posts/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) => setPost(res.data));
-  }, [post]);
 
-  useEffect(() => {
-    axios
-      .get(`${API}/users/${post.author}`, {
-        withCredentials: true,
-      })
-      .then((res) => setAuthor(res.data));
-  }, [author]);
+    const fetchData = async () => {
+      try {
+        // Первый запрос - получаем пост
+        const postResponse = await axios.get(`${API}/posts/${id}`, {
+          withCredentials: true,
+        });
+        setPost(postResponse.data);
 
-  const [likes, setLikes] = useState(post.likes);
-  const [isLiked, setIsLiked] = useState(post.isLikedByUser);
+        if (postResponse.data?.likesBy && user?.id) {
+          setIsLiked(postResponse.data.likesBy.includes(user.id));
+          setLikes(postResponse.data.likes);
+        }
+
+        if (postResponse.data?.author) {
+          const authorResponse = await axios.get(
+            `${API}/users/${postResponse.data.author}`,
+            {
+              withCredentials: true,
+            }
+          );
+          setAuthor(authorResponse.data);
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке данных:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleDelete = () => {
     axios
@@ -75,14 +92,21 @@ export default function ViewPost() {
       const newLikeStatus = !isLiked;
       setIsLiked(newLikeStatus);
       setLikes(newLikeStatus ? likes + 1 : likes - 1);
-
-      // Отправка запроса на сервер
-      // await api.likePost(post.id);
-
-      // Если нужно, можно обновить состояние из ответа сервера
-      // const updatedPost = await api.getPost(post.id);
-      // setLikes(updatedPost.likes);
-      // setIsLiked(updatedPost.isLikedByUser);
+      newLikeStatus
+        ? axios
+            .post(
+              `${API}/posts/${post.id}/like`,
+              {},
+              {
+                withCredentials: true,
+              }
+            )
+            .then(() => console.log("like"))
+        : axios
+            .delete(`${API}/posts/${post.id}/like`, {
+              withCredentials: true,
+            })
+            .then(() => console.log("like"));
     } catch (error) {
       // Откат изменений при ошибке
       setIsLiked(isLiked);
@@ -90,7 +114,6 @@ export default function ViewPost() {
       console.error("Лайк не поставился", error);
     }
   };
-
   const handleCopy = () => {
     const url = window.location.href;
     navigator.clipboard
@@ -117,6 +140,11 @@ export default function ViewPost() {
         close={close}
         opened={opened}
         onDelete={handleDelete}
+      />
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 1 }}
       />
       <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>

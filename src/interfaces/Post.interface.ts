@@ -6,6 +6,6 @@ export type Post = {
   type: string;
   direction: string;
   likes: number;
-  isLikedByUser: boolean;
+  likesBy: [];
   previewImage?: string;
 };

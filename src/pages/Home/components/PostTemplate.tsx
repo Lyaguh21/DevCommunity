@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Image,
+  LoadingOverlay,
   Text,
   UnstyledButton,
 } from "@mantine/core";
@@ -24,17 +25,24 @@ import { useAuthStore } from "../../../stores/authStore";
 
 export default function PostTemplate({ post }: { post: Post }) {
   const [likes, setLikes] = useState(post.likes);
-  const [isLiked, setIsLiked] = useState(post.isLikedByUser);
+  const [isLiked, setIsLiked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [author, setAuthor] = useState<UserProfile>();
   const navigate = useNavigate();
   const { user } = useAuthStore();
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${API}/users/${post.author}`, {
         withCredentials: true,
       })
-      .then((res) => setAuthor(res.data));
+      .then((res) => {
+        setAuthor(res.data);
+        setIsLiked(post.likesBy.includes(user?.id));
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }, [post]);
 
   const handleLike = async () => {
@@ -42,14 +50,21 @@ export default function PostTemplate({ post }: { post: Post }) {
       const newLikeStatus = !isLiked;
       setIsLiked(newLikeStatus);
       setLikes(newLikeStatus ? likes + 1 : likes - 1);
-
-      // Отправка запроса на сервер
-      // await api.likePost(post.id);
-
-      // Если нужно, можно обновить состояние из ответа сервера
-      // const updatedPost = await api.getPost(post.id);
-      // setLikes(updatedPost.likes);
-      // setIsLiked(updatedPost.isLikedByUser);
+      newLikeStatus
+        ? axios
+            .post(
+              `${API}/posts/${post.id}/like`,
+              {},
+              {
+                withCredentials: true,
+              }
+            )
+            .then(() => console.log("like"))
+        : axios
+            .delete(`${API}/posts/${post.id}/like`, {
+              withCredentials: true,
+            })
+            .then(() => console.log("like"));
     } catch (error) {
       // Откат изменений при ошибке
       setIsLiked(isLiked);
@@ -61,6 +76,11 @@ export default function PostTemplate({ post }: { post: Post }) {
   return (
     <>
       <Box w={"100%"} bg="white" className={classes.shadow} p={24}>
+        <LoadingOverlay
+          visible={loading}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 1 }}
+        />
         <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
           <Flex gap={6}>
             <Avatar

@@ -8,6 +8,7 @@ import { API } from "../../app/helpers";
 import { notifications } from "@mantine/notifications";
 
 export default function Home() {
+  const [originalData, setOriginalData] = useState<Post[]>([]);
   const [filteredData, setFilteredData] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
@@ -21,7 +22,10 @@ export default function Home() {
       .get(`${API}/posts`, {
         withCredentials: true,
       })
-      .then((res) => setFilteredData(res.data))
+      .then((res) => {
+        setOriginalData(res.data);
+        setFilteredData(res.data);
+      })
       .catch(() => {
         notifications.show({
           title: "Ошибка",
@@ -34,7 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     const filterPosts = () => {
-      let filtered = [...filteredData];
+      let filtered = [...originalData];
 
       if (filters.type !== "All") {
         filtered = filtered.filter((post) => post.type === filters.type);
@@ -50,7 +54,7 @@ export default function Home() {
     };
 
     filterPosts();
-  }, [filters]);
+  }, [filters, originalData]);
 
   return (
     <Flex direction="column" py={16} mih="94vh">
