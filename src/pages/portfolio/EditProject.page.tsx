@@ -79,7 +79,9 @@ export default function EditProject() {
     setLoading(true);
 
     axios
-      .get(`${API}/users/${author.userId}/portfolio/${id}`)
+      .get(`${API}/users/${author.userId}/portfolio/${id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         const userData = res.data;
         setProject(userData);
@@ -114,16 +116,22 @@ export default function EditProject() {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .patch(`${API}/users/${author.userId}/portfolio/${id}`, {
-        title: form.values.title,
-        description: form.values.content,
-        links: [
-          form.values.gitHubLink === "" ? null : form.values.gitHubLink,
-          form.values.demoLink === "" ? null : form.values.demoLink,
-          form.values.designLink === "" ? null : form.values.designLink,
-        ],
-        previewImage: form.values.previewImage,
-      })
+      .patch(
+        `${API}/users/${author.userId}/portfolio/${id}`,
+        {
+          title: form.values.title,
+          description: form.values.content,
+          links: [
+            form.values.gitHubLink === "" ? null : form.values.gitHubLink,
+            form.values.demoLink === "" ? null : form.values.demoLink,
+            form.values.designLink === "" ? null : form.values.designLink,
+          ],
+          previewImage: form.values.previewImage,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then(() =>
         notifications.show({
           title: "Успешно",
@@ -149,6 +157,7 @@ export default function EditProject() {
       formData.append("image", file);
 
       const response = await axios.post(`${API}/image`, formData, {
+        withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
         },

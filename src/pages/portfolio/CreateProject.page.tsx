@@ -88,16 +88,22 @@ export default function CreateProject() {
     }
     setLoading(true);
     axios
-      .post(`${API}/users/${user?.id}/portfolio`, {
-        title: form.values.title,
-        description: form.values.content,
-        links: [
-          form.values.gitHubLink === "" ? null : form.values.gitHubLink,
-          form.values.demoLink === "" ? null : form.values.demoLink,
-          form.values.designLink === "" ? null : form.values.designLink,
-        ],
-        previewImage: form.values.previewImage,
-      })
+      .post(
+        `${API}/users/${user?.id}/portfolio`,
+        {
+          title: form.values.title,
+          description: form.values.content,
+          links: [
+            form.values.gitHubLink === "" ? null : form.values.gitHubLink,
+            form.values.demoLink === "" ? null : form.values.demoLink,
+            form.values.designLink === "" ? null : form.values.designLink,
+          ],
+          previewImage: form.values.previewImage,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then(() => {
         notifications.show({
           title: "Успешно",

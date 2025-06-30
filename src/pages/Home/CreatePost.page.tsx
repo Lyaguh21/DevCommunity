@@ -51,7 +51,7 @@ export default function CreatePost() {
     console.log(form.values);
   };
   return (
-    <Box py={16}>
+    <Box py={16} mih="94vh">
       <Box bg="white" p={24} className={classes.shadow}>
         <LoadingOverlay
           visible={loading}
@@ -67,6 +67,7 @@ export default function CreatePost() {
               <Input.Wrapper
                 label="Название"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
@@ -81,6 +82,7 @@ export default function CreatePost() {
               <Input.Wrapper
                 label="Направление поста"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
                 <Select
                   data={Directions}
@@ -93,6 +95,7 @@ export default function CreatePost() {
               <Input.Wrapper
                 label="Тип поста"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
                 <Select
                   w={{ md: "385px", base: "100%" }}
@@ -106,7 +109,7 @@ export default function CreatePost() {
 
             <Flex direction="column" w="100%">
               <Text fz={18} fw={500}>
-                Изображение (опционально)
+                Изображение
               </Text>
               <Dropzone
                 classNames={{ root: classes.input }}
@@ -190,6 +193,7 @@ export default function CreatePost() {
             </Flex>
           </Flex>
           <Textarea
+            withAsterisk
             rows={8}
             label="Текст"
             size="lg"

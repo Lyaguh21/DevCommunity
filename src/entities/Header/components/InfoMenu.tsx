@@ -26,6 +26,9 @@ export default function InfoMenu({ setVisibleInfo }) {
 
   const onExit = () => {
     clearUser();
+    axios.post(`${API}/auth/logout`, {
+      withCredentials: true,
+    });
     close();
   };
 

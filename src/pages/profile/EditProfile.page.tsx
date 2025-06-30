@@ -35,7 +35,6 @@ export default function EditProfile() {
       avatar: "",
       firstName: "",
       lastName: "",
-      nickname: "",
       role: "",
       description: "",
       workplace: "",
@@ -58,7 +57,6 @@ export default function EditProfile() {
           avatar: userData.avatar || "",
           firstName: userData.firstName || "",
           lastName: userData.lastName || "",
-          nickname: userData.nickname || "",
           role: userData.role || "",
           description: userData.description || "",
           workplace: userData.workplace || "",
@@ -68,57 +66,24 @@ export default function EditProfile() {
       .finally(() => setLoading(false));
   }, [user?.id]);
 
-  // const handleSubmit = async (values: typeof form.values) => {
-  //   setLoading(true);
-  //   axios
-  //     .patch(
-  //       `${API}/users/${user?.id}`,
-  //       {
-  //         avatar: form.values.avatar,
-  //         firstName: form.values.firstName,
-  //         lastName: form.values.lastName,
-  //         description: form.values.description,
-  //         workplace: form.values.workplace,
-  //         role: form.values.role,
-  //       },
-  //       {
-  //         withCredentials: true, // Отправляем куки (JWT)
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           // Уберите заголовок Authorization, если он был
-  //           // (теперь токен передается через куки)
-  //         },
-  //       }
-  //     )
-  //     .then(() =>
-  //       notifications.show({
-  //         title: "Успешно",
-  //         message: "Профиль обновлен!",
-  //         color: "green",
-  //       })
-  //     )
-  //     .catch(() =>
-  //       notifications.show({
-  //         title: "Ошибка",
-  //         message: "Не удалось изменить профиль",
-  //         color: "red",
-  //       })
-  //     )
-  //     .finally(() => setLoading(false));
-  // };
-
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
-
-    // Проверка наличия кук
-    console.log("Текущие куки:", document.cookie);
-
     axios
       .patch(
         `${API}/users/${user?.id}`,
-        { ...values },
+        {
+          avatar: form.values.avatar,
+          firstName: form.values.firstName,
+          lastName: form.values.lastName,
+          description: form.values.description,
+          workplace: form.values.workplace,
+          role: form.values.role,
+        },
         {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       )
       .then(() =>
@@ -128,14 +93,45 @@ export default function EditProfile() {
           color: "green",
         })
       )
-      .catch((error) => {
-        console.error("Ошибка запроса:", error);
-        if (error.response?.status === 401) {
-          console.log("Куки не отправились или устарели!");
-        }
-      })
+      .catch(() =>
+        notifications.show({
+          title: "Ошибка",
+          message: "Не удалось изменить профиль",
+          color: "red",
+        })
+      )
       .finally(() => setLoading(false));
   };
+
+  // const handleSubmit = async (values: typeof form.values) => {
+  //   setLoading(true);
+
+  //   // Проверка наличия кук
+  //   console.log("Текущие куки:", document.cookie);
+
+  //   axios
+  //     .patch(
+  //       `${API}/users/${user?.id}`,
+  //       { ...values },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then(() =>
+  //       notifications.show({
+  //         title: "Успешно",
+  //         message: "Профиль обновлен!",
+  //         color: "green",
+  //       })
+  //     )
+  //     .catch((error) => {
+  //       console.error("Ошибка запроса:", error);
+  //       if (error.response?.status === 401) {
+  //         console.log("Куки не отправились или устарели!");
+  //       }
+  //     })
+  //     .finally(() => setLoading(false));
+  // };
 
   const handleImageUpload = async (file: FileWithPath) => {
     setLoading(true);
@@ -145,6 +141,7 @@ export default function EditProfile() {
       formData.append("image", file);
 
       const response = await axios.post(`${API}/image`, formData, {
+        withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
         },

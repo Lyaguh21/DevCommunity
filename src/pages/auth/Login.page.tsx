@@ -33,10 +33,16 @@ export default function Login() {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     axios
-      .post(`${API}/auth/login`, {
-        nickname: form.values.nickname,
-        password: form.values.password,
-      })
+      .post(
+        `${API}/auth/login`,
+        {
+          nickname: form.values.nickname,
+          password: form.values.password,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setLoading(true);
         setUser({
