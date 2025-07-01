@@ -17,7 +17,7 @@ export default function ProfileTemplate({
       bg="#f9fafc"
       style={{ overflow: "hidden", borderRadius: "12px" }}
       className={classes.projectCard}
-      miw={335}
+      miw={400}
     >
       <Image
         src={

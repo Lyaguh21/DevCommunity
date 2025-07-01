@@ -89,11 +89,13 @@ export default function ProfileTemplate({
                 </Flex>
               </Button>
             </NavLink>
-            <Button bg="#4f46e5" hiddenFrom="sm" px={6} w={36}>
-              <Flex align="center" gap={4}>
-                <Edit size={16} />
-              </Flex>
-            </Button>
+            <NavLink to="/profile/edit">
+              <Button bg="#4f46e5" hiddenFrom="sm" px={6} w={36}>
+                <Flex align="center" gap={4}>
+                  <Edit size={16} />
+                </Flex>
+              </Button>
+            </NavLink>
 
             <Button bg="#eb0918" visibleFrom="sm" onClick={openModal}>
               <Flex align="center" gap={4}>
@@ -101,7 +103,13 @@ export default function ProfileTemplate({
                 <Text>Выйти</Text>
               </Flex>
             </Button>
-            <Button bg="#eb0918" hiddenFrom="sm" px={6} w={36}>
+            <Button
+              bg="#eb0918"
+              hiddenFrom="sm"
+              px={6}
+              w={36}
+              onClick={openModal}
+            >
               <Flex align="center" gap={4}>
                 <Logout size={16} />
               </Flex>
