@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Flex, Text, UnstyledButton } from "@mantine/core";
-import { UserProfile } from "../../../interfaces/UserProfile";
+import { UserProfile } from "../../../entities/user/UserProfile";
 import classes from "../classes/profile.module.css";
-import { Roles } from "../../../interfaces/Role";
+import { Roles } from "../../../entities/user/Role";
 import { Edit, Logout } from "tabler-icons-react";
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router";

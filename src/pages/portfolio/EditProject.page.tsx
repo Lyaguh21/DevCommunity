@@ -20,7 +20,7 @@ import { notifications } from "@mantine/notifications";
 import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 import { API } from "../../app/helpers";
-import { Project } from "../../interfaces/Project.interface";
+import { Project } from "../../entities/user/Project.interface";
 
 export default function EditProject() {
   const [project, setProject] = useState<Project>();

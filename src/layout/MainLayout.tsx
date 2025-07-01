@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import Header from "../entities/Header/Header";
+import Header from "../widgets/Header/Header";
 import { Box } from "@mantine/core";
 
 export default function MainLayout() {

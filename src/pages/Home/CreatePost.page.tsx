@@ -13,13 +13,13 @@ import {
 import { NavLink, useNavigate } from "react-router";
 
 import classes from "./classes/Home.module.css";
-import { TypeNotHRPost, TypePost } from "../../interfaces/Type";
+import { TypeNotHRPost, TypePost } from "../../entities/post/Type";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import "@mantine/dropzone/styles.css";
 import { useForm } from "@mantine/form";
-import { Directions } from "../../interfaces/Directions";
+import { Directions } from "../../entities/post/Directions";
 import { useAuthStore } from "../../stores/authStore";
 import { notifications } from "@mantine/notifications";
 import { API } from "../../app/helpers";

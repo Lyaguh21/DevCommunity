@@ -2,7 +2,7 @@ import { Center, Flex, LoadingOverlay, Text } from "@mantine/core";
 import FilterSection from "./components/FilterSection";
 import PostTemplate from "./components/PostTemplate";
 import { useState, useEffect } from "react";
-import { Post } from "../../interfaces/Post.interface";
+import { Post } from "../../entities/post/Post.interface";
 import axios from "axios";
 import { API } from "../../app/helpers";
 import { notifications } from "@mantine/notifications";

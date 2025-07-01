@@ -7,7 +7,7 @@ import { AnimatePresence } from "motion/react";
 
 import InfoMenu from "./components/InfoMenu";
 import axios from "axios";
-import { UserProfile } from "../../interfaces/UserProfile";
+import { UserProfile } from "../../entities/user/UserProfile";
 import { API } from "../../app/helpers";
 import { useAuthStore } from "../../stores/authStore";
 

@@ -8,8 +8,8 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
-import { Post } from "../../../interfaces/Post.interface";
-import { Roles } from "../../../interfaces/Role";
+import { Post } from "../../../entities/post/Post.interface";
+import { Roles } from "../../../entities/user/Role";
 import { Heart, Point, User } from "tabler-icons-react";
 import TypeAndDirection from "./TypeAndDirection";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ import classes from "../classes/Home.module.css";
 
 import axios from "axios";
 import { API } from "../../../app/helpers";
-import { UserProfile } from "../../../interfaces/UserProfile";
+import { UserProfile } from "../../../entities/user/UserProfile";
 import { useAuthStore } from "../../../stores/authStore";
 
 export default function PostTemplate({ post }: { post: Post }) {

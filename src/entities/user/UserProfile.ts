@@ -1,4 +1,4 @@
-import { Project } from "./Project.interface";
+import { Project } from "../../interfaces/Project.interface";
 
 export type UserProfile = {
   id: string;

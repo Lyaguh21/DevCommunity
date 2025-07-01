@@ -1,6 +1,6 @@
 import { Avatar, Box, Flex, Text, Image, LoadingOverlay } from "@mantine/core";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router";
-import { Roles } from "../../interfaces/Role";
+import { Roles } from "../../entities/user/Role";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import {
   ArrowLeft,
@@ -9,9 +9,9 @@ import {
   Link,
   Point,
 } from "tabler-icons-react";
-import { Project } from "../../interfaces/Project.interface";
+import { Project } from "../../entities/user/Project.interface";
 import classes from "./classes/portfolio.module.css";
-import ModalConfirmDelete from "../../entities/ModalConfilrmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../../widgets/ModalConfilrmDelete/ModalConfirmDelete";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import axios from "axios";

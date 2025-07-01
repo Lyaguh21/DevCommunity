@@ -10,11 +10,11 @@ import {
   ActionIcon,
   LoadingOverlay,
 } from "@mantine/core";
-import { UserProfile } from "../../interfaces/UserProfile";
+import { UserProfile } from "../../entities/user/UserProfile";
 import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import classes from "./classes/profile.module.css";
-import { Roles } from "../../interfaces/Role";
+import { Roles } from "../../entities/user/Role";
 import { useEffect, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { NavLink, useNavigate } from "react-router";

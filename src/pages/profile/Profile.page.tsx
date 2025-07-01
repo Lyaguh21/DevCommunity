@@ -2,13 +2,13 @@ import { Center, Flex, Loader } from "@mantine/core";
 
 import ProfileTemplate from "./components/ProfileTemplate";
 import { useDisclosure } from "@mantine/hooks";
-import ModalExit from "../../entities/ModalExit/ModalExit";
+import ModalExit from "../../widgets/ModalExit/ModalExit";
 import { useParams } from "react-router";
 import { useAuthStore } from "../../stores/authStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../app/helpers";
-import { UserProfile } from "../../interfaces/UserProfile";
+import { UserProfile } from "../../entities/user/UserProfile";
 import PortfolioSection from "./components/PortfolioSection";
 
 export default function Profile() {

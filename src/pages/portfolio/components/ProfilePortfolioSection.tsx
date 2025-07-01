@@ -4,8 +4,8 @@ import classes from "../classes/portfolio.module.css";
 import { IconBuilding, IconCode } from "@tabler/icons-react";
 
 import { Plus } from "tabler-icons-react";
-import { UserProfile } from "../../../interfaces/UserProfile";
-import { Roles } from "../../../interfaces/Role";
+import { UserProfile } from "../../../entities/user/UserProfile";
+import { Roles } from "../../../entities/user/Role";
 import { useAuthStore } from "../../../stores/authStore";
 export default function ProfilePortfolioSection({
   ThisUser,

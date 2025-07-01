@@ -1,7 +1,7 @@
 import { Badge, Flex } from "@mantine/core";
 
-import { TypePost } from "../../../interfaces/Type";
-import { Directions } from "../../../interfaces/Directions";
+import { TypePost } from "../../../entities/post/Type";
+import { Directions } from "../../../entities/post/Directions";
 
 export default function TypeAndDirection({
   direction,

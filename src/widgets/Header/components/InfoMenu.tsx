@@ -10,7 +10,7 @@ import ModalExit from "../../ModalExit/ModalExit";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../../app/helpers";
-import { UserProfile } from "../../../interfaces/UserProfile";
+import { UserProfile } from "../../../entities/user/UserProfile";
 export default function InfoMenu({ setVisibleInfo }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [data, setData] = useState<UserProfile>();

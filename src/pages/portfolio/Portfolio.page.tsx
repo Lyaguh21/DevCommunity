@@ -1,5 +1,5 @@
 import { NavLink, useParams } from "react-router";
-import { UserProfile } from "../../interfaces/UserProfile";
+import { UserProfile } from "../../entities/user/UserProfile";
 import { Box, Flex, LoadingOverlay, SimpleGrid, Text } from "@mantine/core";
 
 import ProfilePortfolioSection from "./components/ProfilePortfolioSection";

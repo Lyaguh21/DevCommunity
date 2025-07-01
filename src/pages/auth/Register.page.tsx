@@ -16,7 +16,7 @@ import classes from "./classes/AuthStyles.module.css";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { IconArrowRight } from "@tabler/icons-react";
-import { Roles } from "../../interfaces/Role";
+import { Roles } from "../../entities/user/Role";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { API } from "../../app/helpers";

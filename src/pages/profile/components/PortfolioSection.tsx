@@ -2,8 +2,8 @@ import { Box, Flex, Group, Text, UnstyledButton } from "@mantine/core";
 import classes from "../classes/profile.module.css";
 import { NavLink } from "react-router";
 import ProjectTemplate from "./ProjectTemplate";
-import { UserProfile } from "../../../interfaces/UserProfile";
-import { Project } from "../../../interfaces/Project.interface";
+import { UserProfile } from "../../../entities/user/UserProfile";
+import { Project } from "../../../entities/user/Project.interface";
 export default function PortfolioSection({
   ThisUser,
   thisAuthor,

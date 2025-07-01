@@ -1,9 +1,9 @@
 import { Text, Box, Flex, Image, UnstyledButton } from "@mantine/core";
-import { Project } from "../../../interfaces/Project.interface";
+import { Project } from "../../../entities/user/Project.interface";
 import classes from "../classes/profile.module.css";
 import { BrandFigma, BrandGithub, Link } from "tabler-icons-react";
 import { NavLink, useNavigate } from "react-router";
-import { UserProfile } from "../../../interfaces/UserProfile";
+import { UserProfile } from "../../../entities/user/UserProfile";
 
 export default function ProfileTemplate({
   project,

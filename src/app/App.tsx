@@ -1,14 +1,14 @@
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
-import { Router } from "./Router";
+
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
-
+import { Router } from "./providers/Router";
 
 export default function App() {
   return (
     <MantineProvider forceColorScheme="light">
-      <Notifications />
+      <Notifications position="top-right" autoClose={1500} />
       <Router />
     </MantineProvider>
   );
