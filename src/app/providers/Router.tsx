@@ -16,6 +16,7 @@ import RequireAuth from "./RequireAuth";
 import Home from "../../pages/Home/Home.page";
 import Login from "../../pages/auth/Login.page";
 import Error404 from "../../pages/Errors/Error404.page";
+import EditPost from "../../pages/Home/EditPost.page";
 
 const router = createBrowserRouter([
   {
@@ -34,8 +35,14 @@ const router = createBrowserRouter([
             element: <CreatePost />,
           },
           {
+            path: "/portfolio/EditPost/:id",
+            element: <EditPost />,
+            errorElement: <ErrorNotFound />,
+          },
+          {
             path: "/post/:id",
             element: <ViewPost />,
+            errorElement: <ErrorNotFound />,
           },
           {
             path: "/profile/:id",
@@ -53,6 +60,7 @@ const router = createBrowserRouter([
           {
             path: "/portfolio/project/:id",
             element: <ViewProject />,
+            errorElement: <ErrorNotFound />,
           },
           {
             path: "/portfolio/createProject",
@@ -61,6 +69,7 @@ const router = createBrowserRouter([
           {
             path: "/portfolio/EditProject/:id",
             element: <EditProject />,
+            errorElement: <ErrorNotFound />,
           },
         ],
       },

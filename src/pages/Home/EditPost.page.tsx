@@ -7,6 +7,7 @@ import {
   Grid,
   Input,
   LoadingOverlay,
+  Select,
   Text,
   Textarea,
 } from "@mantine/core";
@@ -15,14 +16,16 @@ import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router";
-import classes from "./classes/portfolio.module.css";
+import classes from "./classes/Home.module.css";
 import { notifications } from "@mantine/notifications";
 import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 import { API } from "../../app/helpers";
 import { Project } from "../../entities/user/Project.interface";
+import { Directions } from "../../entities/post/Directions";
+import { TypeNotHRPost, TypePost } from "../../entities/post/Type";
 
-export default function EditProject() {
+export default function EditPost() {
   const [project, setProject] = useState<Project>();
   const { user } = useAuthStore();
   const { id } = useParams();
@@ -38,41 +41,18 @@ export default function EditProject() {
     initialValues: {
       title: "",
       content: "",
-      gitHubLink: "",
-      demoLink: "",
-      designLink: "",
+      type: "",
+      direction: "",
       previewImage: "",
     },
     validate: {
       title: (value) =>
         value.trim().length < 3 ? "Название слишком короткое" : null,
-
-      gitHubLink: (value) => {
-        if (value && value.trim() !== "") {
-          return !/^https?:\/\//i.test(value.trim())
-            ? "Ссылка должна начинаться с http:// или https://"
-            : null;
-        }
-        return null;
-      },
-
-      demoLink: (value) => {
-        if (value && value.trim() !== "") {
-          return !/^https?:\/\//i.test(value.trim())
-            ? "Ссылка должна начинаться с http:// или https://"
-            : null;
-        }
-        return null;
-      },
-
-      designLink: (value) => {
-        if (value && value.trim() !== "") {
-          return !/^https?:\/\//i.test(value.trim())
-            ? "Ссылка должна начинаться с http:// или https://"
-            : null;
-        }
-        return null;
-      },
+      direction: (value) =>
+        value.length == 0 ? "Выберите направление поста" : null,
+      type: (value) => (value.length == 0 ? "Выберите тип поста" : null),
+      content: (value) =>
+        value.trim().length < 5 ? "Текст поста слишком короткий" : null,
     },
   });
 
@@ -80,7 +60,7 @@ export default function EditProject() {
     setLoading(true);
 
     axios
-      .get(`${API}/users/${author.userId}/portfolio/${id}`, {
+      .get(`${API}/posts/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -90,10 +70,9 @@ export default function EditProject() {
         // Обновляем значения формы
         form.setValues({
           title: userData.title || "",
-          content: userData.description || "",
-          gitHubLink: userData.links[0] || "",
-          demoLink: userData.links[1] || "",
-          designLink: userData.links[2] || "",
+          direction: userData.direction || "",
+          type: userData.type || "",
+          content: userData.content || "",
           previewImage: userData.previewImage || "",
         });
         console.log(author);
@@ -118,15 +97,12 @@ export default function EditProject() {
     setLoading(true);
     axios
       .patch(
-        `${API}/users/${author.userId}/portfolio/${id}`,
+        `${API}/posts/${id}`,
         {
           title: form.values.title,
-          description: form.values.content,
-          links: [
-            form.values.gitHubLink === "" ? null : form.values.gitHubLink,
-            form.values.demoLink === "" ? null : form.values.demoLink,
-            form.values.designLink === "" ? null : form.values.designLink,
-          ],
+          direction: form.values.direction,
+          type: form.values.type,
+          content: form.values.content,
           previewImage: form.values.previewImage,
         },
         {
@@ -149,7 +125,7 @@ export default function EditProject() {
       )
       .finally(() => {
         setLoading(false);
-        navigate(`/portfolio/${author?.userId}`);
+        navigate(`/post/${id}`);
       });
   };
 
@@ -189,7 +165,9 @@ export default function EditProject() {
   };
 
   if (user?.id !== author?.userId) {
-    return <Center>У вас нет доступа к редактированию этого проекта</Center>;
+    return (
+      <Center mih="94vh">У вас нет доступа к редактированию этого поста</Center>
+    );
   }
 
   return (
@@ -201,7 +179,7 @@ export default function EditProject() {
       />
       <Box bg="white" p={24} className={classes.shadow}>
         <Text ta="center" fz={22} fw={500} c="#4f46e5" mb={8}>
-          Редактирование проекта
+          Редактирование поста
         </Text>
         <form>
           <Flex gap={16} mb={16} wrap={{ base: "wrap", md: "nowrap" }}>
@@ -210,10 +188,11 @@ export default function EditProject() {
                 label="Название"
                 classNames={{ label: classes.label }}
                 withAsterisk
+                errorProps={{ style: { display: "none" } }}
               >
                 <Input
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите название проекта"
+                  placeholder="Введите название поста"
                   size="lg"
                   c="#4f46e5"
                   radius="6px"
@@ -222,42 +201,33 @@ export default function EditProject() {
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Github "
+                label="Направление поста"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
-                <Input
+                <Select
+                  data={Directions}
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите ссылку на Github"
+                  placeholder="Введите направление поста"
+                  key={form.key("direction")}
                   size="lg"
-                  c="#4f46e5"
-                  radius="6px"
-                  maxLength={100}
-                  {...form.getInputProps("gitHubLink")}
-                />
-              </Input.Wrapper>
-              <Input.Wrapper label="Демо" classNames={{ label: classes.label }}>
-                <Input
-                  w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите ссылку на демо проекта"
-                  size="lg"
-                  c="#4f46e5"
-                  radius="6px"
-                  maxLength={100}
-                  {...form.getInputProps("demoLink")}
+                  errorProps={{ style: { display: "none" } }}
+                  {...form.getInputProps("direction")}
                 />
               </Input.Wrapper>
               <Input.Wrapper
-                label="Дизайн"
+                label="Тип поста"
                 classNames={{ label: classes.label }}
+                withAsterisk
               >
-                <Input
+                <Select
                   w={{ md: "385px", base: "100%" }}
-                  placeholder="Введите ссылку на дизайн проекта"
+                  data={user?.role == "HR" ? TypePost : TypeNotHRPost}
+                  placeholder="Введите тип поста"
+                  key={form.key("type")}
                   size="lg"
-                  c="#4f46e5"
-                  radius="6px"
-                  maxLength={100}
-                  {...form.getInputProps("designLink")}
+                  errorProps={{ style: { display: "none" } }}
+                  {...form.getInputProps("type")}
                 />
               </Input.Wrapper>
             </Flex>
@@ -357,16 +327,26 @@ export default function EditProject() {
                   </Box>
                 )}
               </Dropzone>
-              <Textarea
-                rows={8}
-                label="Текст"
-                size="lg"
-                placeholder="Напишите текст к своему проекту"
-                {...form.getInputProps("content")}
-              />
             </Flex>
           </Flex>
+          <Textarea
+            withAsterisk
+            rows={8}
+            label="Текст"
+            size="lg"
+            errorProps={{ style: { display: "none" } }}
+            placeholder="Напишите текст к своему посту в формате Markdown
 
+Пример:
+# Заголовок
+## Подзаголовок
+**Жирный текст**
+[Ссылка](https://example.com)
+*Курсив*
+`код`
+> Цитата"
+            {...form.getInputProps("content")}
+          />
           <Flex justify="flex-end" mt={24} gap={16}>
             <NavLink to={`/portfolio/${author?.userId}`}>
               <Button

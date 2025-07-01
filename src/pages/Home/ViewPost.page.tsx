@@ -135,7 +135,7 @@ export default function ViewPost() {
   };
 
   return (
-    <Box pt={16} mih="94vh">
+    <Box py={16} mih="94vh">
       <ModalConfirmDelete
         close={close}
         opened={opened}
@@ -185,9 +185,19 @@ export default function ViewPost() {
 
           <Flex gap={8} align="center">
             <TypeAndDirection type={post.type} direction={post.direction} />
-            {author?.id === user?.userId && (
+            {author?.userId === user?.id && (
               <>
-                <IconEdit size={20} style={{ cursor: "pointer" }} />
+                <NavLink
+                  to={`/portfolio/EditPost/${post.id}`}
+                  state={{ author: author }}
+                  style={{ height: "20px", width: "20px" }}
+                >
+                  <IconEdit
+                    size={20}
+                    style={{ cursor: "pointer" }}
+                    color="black"
+                  />
+                </NavLink>
                 <IconTrash
                   size={20}
                   style={{ cursor: "pointer" }}
