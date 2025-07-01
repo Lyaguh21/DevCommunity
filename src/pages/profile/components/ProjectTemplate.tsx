@@ -14,7 +14,6 @@ export default function ProfileTemplate({
 }) {
   return (
     <Box
-      key={project.id}
       bg="#f9fafc"
       style={{ overflow: "hidden", borderRadius: "12px" }}
       className={classes.projectCard}

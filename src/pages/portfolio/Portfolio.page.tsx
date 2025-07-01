@@ -66,7 +66,7 @@ export default function Portfolio() {
 
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" w="100%">
             {ThisUser?.portfolio.map((el) => (
-              <ProjectTemplate user={ThisUser} project={el} />
+              <ProjectTemplate user={ThisUser} project={el} key={el.id} />
             ))}
           </SimpleGrid>
         </Box>

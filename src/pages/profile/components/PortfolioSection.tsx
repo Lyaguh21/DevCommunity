@@ -46,7 +46,7 @@ export default function PortfolioSection({
           ThisUser.portfolio
             .slice(0, 3)
             .map((el: Project) => (
-              <ProjectTemplate key={el.id} project={el} user={ThisUser} />
+              <ProjectTemplate project={el} user={ThisUser} key={el.id} />
             ))}
       </Group>
       <Flex justify="flex-end" pt={4}>

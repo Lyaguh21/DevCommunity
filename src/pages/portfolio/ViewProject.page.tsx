@@ -75,7 +75,7 @@ export default function ViewProject() {
         opened={opened}
         onDelete={handleDelete}
       />
-      <Box pt={16} mih="94vh">
+      <Box pt={16} mih="94vh" key={id}>
         <LoadingOverlay
           visible={loading}
           zIndex={1000}
@@ -85,13 +85,18 @@ export default function ViewProject() {
           <Flex justify="space-between" wrap={{ base: "wrap" }} gap={8}>
             <Flex gap={6}>
               <Avatar
-                src={author?.avatar}
+                src={
+                  author?.avatar
+                    ? `data:image/jpeg;base64,${author?.avatar}`
+                    : undefined
+                }
                 alt={author?.nickname}
                 color="#4f46e5"
-                h={40}
-                w={40}
+                h={38}
+                w={38}
               >
-                {author?.nickname[0]}
+                {author?.firstName[0]}
+                {author?.lastName[0]}
               </Avatar>
               <Box>
                 <Text lh="20px" fz={16} fw={600}>
