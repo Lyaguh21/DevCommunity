@@ -58,9 +58,9 @@
   <img src="screenshots/8.png"  />
   <img src="screenshots/9.png"  />
   <img src="screenshots/10.png"  />
-  <img src="screenshots/11.png"  />
-  <img src="screenshots/12.png"  />
-
+  <img src="screenshots/11.png" width="300px"/>
+  <img src="screenshots/12.png"  width="300px"/>
+  <img src="screenshots/13.png"  width="300px"/>
 </p>
 
 ## 🚀 Установка и запуск
